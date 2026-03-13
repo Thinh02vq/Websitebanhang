@@ -11,8 +11,8 @@ using Websitebanhang.Repository;
 namespace Websitebanhang.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20260313171252_FirstMigration")]
-    partial class FirstMigration
+    [Migration("20260313174021_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -95,6 +95,10 @@ namespace Websitebanhang.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Image")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
