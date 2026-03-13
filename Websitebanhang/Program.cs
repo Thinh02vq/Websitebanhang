@@ -1,5 +1,10 @@
+using Microsoft.EntityFrameworkCore;
+using Websitebanhang.Repository;
+
 var builder = WebApplication.CreateBuilder(args);
 
+// connection DB
+builder.Services.AddDbContext<DataContext>(options =>options.UseSqlServer(builder.Configuration.GetConnectionString("connectDB")));
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
