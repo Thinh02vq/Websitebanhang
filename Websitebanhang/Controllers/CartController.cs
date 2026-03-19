@@ -43,6 +43,8 @@ namespace Websitebanhang.Controllers
                 cartItems.Quantity += 1;
             }
             HttpContext.Session.setJson("Cart", cart);
+
+            TempData["Success"] = "Thêm sản phẩm vào giỏ hàng thành công!";
             return Redirect(Request.Headers["Referer"].ToString());
         }
         public async Task<IActionResult> Decrease(int Id)
@@ -106,6 +108,7 @@ namespace Websitebanhang.Controllers
         public async Task<IActionResult> Clear()
         {
             HttpContext.Session.Remove("Cart");
+            TempData["Success"] = "Đã xoá các sản phẩm trong giỏ hàng!";
             return RedirectToAction("cart");
         }
     }
