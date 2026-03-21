@@ -3,9 +3,9 @@
 @{
     ViewData["Title"] = "Create Product";
 }
-<h3> thêm sản phẩm</h3>
+<h3> Thêm sản phẩm</h3>
 <div class="col-md-6">
-<form asp-action="Create" asp-controller="Product" method="post" enctype="multipart/form-data">
+<form asp-action="Create" method="post" enctype="multipart/form-data">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="form-group">
         <label>Tên sản phẩm</label>
@@ -39,7 +39,7 @@
 
     <div class="form-group">
         <label>Hình ảnh</label>
-        <input asp-for="ImageUpload" class="form-control"/>
+        <input type="file" asp-for="ImageUpload" class="form-control"/>
         <span asp-validation-for="ImageUpload" class=" text-danger"/>
     </div>
    <div class="form-group">

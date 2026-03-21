@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Websitebanhang.Repository.Validation;
 
 namespace Websitebanhang.Models
 {
@@ -7,8 +8,9 @@ namespace Websitebanhang.Models
     {
         [Key]
         public int Id { get; set; }
+        
         [Required(ErrorMessage = "Yêu cầu nhập tên sản phẩm")]
-        public string Name { get; set; } 
+        public string Name { get; set; }
 
         public string Slug { get; set; } 
 
@@ -33,9 +35,7 @@ namespace Websitebanhang.Models
         public string Image { get; set; }
 
         [NotMapped]
-        [Required(ErrorMessage = "Vui lòng chọn một hình ảnh")]
-        [DataType(DataType.Upload)]
-        [FileExtensions(Extensions = "jpg,jpeg,png,gif", ErrorMessage = "Chỉ chấp nhận các định dạng ảnh: jpg, jpeg, png, gif")]
-        public IFormFile ImageUpload { get; set; } 
+        [FileExtension]
+        public IFormFile? ImageUpload { get; set; } 
     }
 }
