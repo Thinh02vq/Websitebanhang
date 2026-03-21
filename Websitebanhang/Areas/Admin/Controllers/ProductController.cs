@@ -133,6 +133,7 @@ namespace Websitebanhang.Areas.Admin.Controllers
                 }
                 // Cập nhật các thuộc tính của sản phẩm hiện tại với giá trị mới từ form
                 existed_product.Name = product.Name;
+                existed_product.Slug = product.Slug;
                 existed_product.Description = product.Description;
                 existed_product.Price = product.Price;
                 existed_product.BrandId = product.BrandId;
@@ -184,7 +185,7 @@ namespace Websitebanhang.Areas.Admin.Controllers
                 _dataContext.Products.Remove(product);
                 await _dataContext.SaveChangesAsync();
                 TempData["Success"] = "Xóa sản phẩm thành công!";
-                return RedirectToAction("Index","Admin/Product");
+                return RedirectToAction("Index");
         }
         
     }
