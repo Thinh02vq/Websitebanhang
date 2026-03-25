@@ -21,6 +21,11 @@ namespace Websitebanhang.Areas.Admin.Controllers
         {
             return View();
         }
+        public async Task<IActionResult> Edit(int Id)
+        {
+            BrandModel? brand = await _dataContext.Brands.FindAsync(Id);
+            return View(brand);
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -28,11 +33,11 @@ namespace Websitebanhang.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                brand.Slug = brand.Name.Replace(" ", "-");// Tạo slug từ tên danh mục
+                brand.Slug = brand.Name.Replace(" ", "-");
                 var slug = await _dataContext.Brands.FirstOrDefaultAsync(p => p.Slug == brand.Slug);// Kiểm tra xem slug đã tồn tại trong cơ sở dữ liệu hay chưa
                 if (slug != null)
                 {
-                    ModelState.AddModelError("", "Danh mục đã tồn tại!");
+                    ModelState.AddModelError("", "Thương hiệu đã tồn tại!");
                     return View(brand);
                 }
                 _dataContext.Brands.Add(brand);
@@ -42,7 +47,40 @@ namespace Websitebanhang.Areas.Admin.Controllers
             }
             else
             {
-                TempData["Error"] = "Thêm danh mục thất bại!";
+                TempData["Error"] = "Thêm thương hiệu thất bại!";
+                List<string> errors = new List<string>();
+                foreach (var modelState in ModelState.Values)
+                {
+                    foreach (var error in modelState.Errors)
+                    {
+                        errors.Add(error.ErrorMessage);
+                    }
+                }
+                string errorMessage = string.Join("\n", errors);
+                return View(brand);
+            } 
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(BrandModel brand)
+        {
+            if (ModelState.IsValid)
+            {
+                brand.Slug = brand.Name.Replace(" ", "-");
+                var slug = await _dataContext.Brands.FirstOrDefaultAsync(p => p.Slug == brand.Slug);
+                if (slug != null)
+                {
+                    ModelState.AddModelError("", "Danh mục đã tồn tại!");
+                    return View(brand);
+                }
+                _dataContext.Brands.Update(brand);
+                await _dataContext.SaveChangesAsync();
+                TempData["Success"] = "Cập nhật danh mục thành công!";
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                TempData["Error"] = "Sửa danh mục thất bại!";
                 List<string> errors = new List<string>();
                 foreach (var modelState in ModelState.Values)
                 {
@@ -54,7 +92,16 @@ namespace Websitebanhang.Areas.Admin.Controllers
                 string errorMessage = string.Join("\n", errors);
                 return View(brand);
             }
-            
+
+        }
+        public async Task<IActionResult> Delete(int Id)
+        {
+            BrandModel? brand = await _dataContext.Brands.FindAsync(Id);
+            if (brand == null) return NotFound();
+            _dataContext.Brands.Remove(brand);
+            await _dataContext.SaveChangesAsync();
+            TempData["Success"] = "Xóa thương hiệu thành công!";
+            return RedirectToAction("Index");
         }
     }
 }
