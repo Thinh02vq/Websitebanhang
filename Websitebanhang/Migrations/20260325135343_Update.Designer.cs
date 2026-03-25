@@ -11,8 +11,8 @@ using Websitebanhang.Repository;
 namespace Websitebanhang.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20260321165507_UpdateProductModel")]
-    partial class UpdateProductModel
+    [Migration("20260325135343_Update")]
+    partial class Update
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -41,6 +41,7 @@ namespace Websitebanhang.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Slug")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
@@ -108,6 +109,7 @@ namespace Websitebanhang.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Slug")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

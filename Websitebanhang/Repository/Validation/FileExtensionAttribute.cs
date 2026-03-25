@@ -4,7 +4,7 @@ namespace Websitebanhang.Repository.Validation
 {
     public class FileExtensionAttribute : ValidationAttribute
     {
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
             if(value is IFormFile file)
             {

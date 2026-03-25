@@ -6,13 +6,13 @@ namespace Websitebanhang.Models
         [Key]
         public int Id { get; set; }
 
-        [Required, MinLength(4, ErrorMessage = "Yêu cầu nhập tên thương hiệu")]
-        public string Name { get; set; }
+        [Required(ErrorMessage = "Yêu cầu nhập tên thương hiệu")]
+        public string Name { get; set; } = string.Empty;
 
-        [Required, MinLength(4, ErrorMessage = "Yêu cầu nhập mô tả thương hiệu")]
-        public string Description { get; set; }
+        [Required(ErrorMessage = "Yêu cầu nhập mô tả thương hiệu")]
+        public string Description { get; set; } = string.Empty;
 
-        public string Slug { get; set; }
+        public string Slug { get; set; } = string.Empty;
 
         public int  Status { get; set; }
 

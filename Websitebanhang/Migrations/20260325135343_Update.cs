@@ -5,7 +5,7 @@
 namespace Websitebanhang.Migrations
 {
     /// <inheritdoc />
-    public partial class UpdateProductModel : Migration
+    public partial class Update : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -14,25 +14,31 @@ namespace Websitebanhang.Migrations
                 name: "Slug",
                 table: "Products",
                 type: "nvarchar(max)",
-                nullable: true,
+                nullable: false,
+                defaultValue: "",
                 oldClrType: typeof(string),
-                oldType: "nvarchar(max)");
+                oldType: "nvarchar(max)",
+                oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
-                name: "Image",
-                table: "Products",
+                name: "Slug",
+                table: "Categories",
                 type: "nvarchar(max)",
-                nullable: true,
+                nullable: false,
+                defaultValue: "",
                 oldClrType: typeof(string),
-                oldType: "nvarchar(max)");
+                oldType: "nvarchar(max)",
+                oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
                 name: "Slug",
                 table: "Brands",
                 type: "nvarchar(max)",
-                nullable: true,
+                nullable: false,
+                defaultValue: "",
                 oldClrType: typeof(string),
-                oldType: "nvarchar(max)");
+                oldType: "nvarchar(max)",
+                oldNullable: true);
         }
 
         /// <inheritdoc />
@@ -42,31 +48,25 @@ namespace Websitebanhang.Migrations
                 name: "Slug",
                 table: "Products",
                 type: "nvarchar(max)",
-                nullable: false,
-                defaultValue: "",
+                nullable: true,
                 oldClrType: typeof(string),
-                oldType: "nvarchar(max)",
-                oldNullable: true);
+                oldType: "nvarchar(max)");
 
             migrationBuilder.AlterColumn<string>(
-                name: "Image",
-                table: "Products",
+                name: "Slug",
+                table: "Categories",
                 type: "nvarchar(max)",
-                nullable: false,
-                defaultValue: "",
+                nullable: true,
                 oldClrType: typeof(string),
-                oldType: "nvarchar(max)",
-                oldNullable: true);
+                oldType: "nvarchar(max)");
 
             migrationBuilder.AlterColumn<string>(
                 name: "Slug",
                 table: "Brands",
                 type: "nvarchar(max)",
-                nullable: false,
-                defaultValue: "",
+                nullable: true,
                 oldClrType: typeof(string),
-                oldType: "nvarchar(max)",
-                oldNullable: true);
+                oldType: "nvarchar(max)");
         }
     }
 }

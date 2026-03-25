@@ -20,7 +20,7 @@ namespace Websitebanhang.Areas.Admin.Controllers
         }
         public async Task<IActionResult> Edit(int Id)
         {
-            CategoryModel category = await _dataContext.Categories.FindAsync(Id);
+            CategoryModel? category = await _dataContext.Categories.FindAsync(Id);
             return View(category);
         }
         public IActionResult Create()
@@ -44,7 +44,7 @@ namespace Websitebanhang.Areas.Admin.Controllers
                 _dataContext.Categories.Add(category);
                 await _dataContext.SaveChangesAsync();
                 TempData["Success"] = "Thêm danh mục thành công!";
-                //return RedirectToAction("Index");
+                return RedirectToAction("Index");
             }
             else 
             {
@@ -58,9 +58,9 @@ namespace Websitebanhang.Areas.Admin.Controllers
                     }
                 }
                 string errorMessage = string.Join("\n", errors);
-                return BadRequest(errorMessage);
+                return View(category);
             }
-            return View(category);
+            
         }
 
         [HttpPost]
@@ -93,15 +93,15 @@ namespace Websitebanhang.Areas.Admin.Controllers
                     }
                 }
                 string errorMessage = string.Join("\n", errors);
-                return BadRequest(errorMessage);
+                return View(category);
             }
-            return View(category);
+            
         }
 
         public async Task<IActionResult> Delete(int Id)
         {
-            CategoryModel category = await _dataContext.Categories.FindAsync(Id);
-            
+            CategoryModel? category = await _dataContext.Categories.FindAsync(Id);
+            if(category == null) return NotFound();
             _dataContext.Categories.Remove(category);
             await _dataContext.SaveChangesAsync();
             TempData["Success"] = "Xóa danh mục thành công!";

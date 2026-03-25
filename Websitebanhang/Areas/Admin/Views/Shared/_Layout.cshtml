@@ -66,11 +66,10 @@
 						</div>
 						<div class="mainmenu pull-left">
 							<ul class="nav navbar-nav collapse navbar-collapse">
-								<li><a asp-controller="Home"" class="active">Trang Chủ</a></li>
-								
-								
+								<li><a asp-controller="Home" class="active">Trang Chủ</a></li>
 								<li><a asp-controller="Product">Sản Phẩm</a></li>
 								<li><a asp-controller="Category">Danh Mục</a></li>
+								<li><a asp-controller="Brand">Thương Hiệu</a></li>
 							</ul>
 						</div>
 					</div>
@@ -87,7 +86,7 @@
 	<section>
 		<div class="container">
 			<div class="row">
-				@Html.Partial("_notification")
+				@await Html.PartialAsync("_notification")
 				@RenderBody()
 			</div>
 		</div>

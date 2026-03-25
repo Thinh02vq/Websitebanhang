@@ -14,7 +14,7 @@ namespace Websitebanhang.Controllers
         }
         public async Task<IActionResult> brand(string Slug = "")
         {
-            BrandModel brand = _dataContext.Brands.Where(c => c.Slug == Slug).FirstOrDefault();
+            BrandModel? brand = _dataContext.Brands.Where(c => c.Slug == Slug).FirstOrDefault();
             if (brand == null) return RedirectToAction("brand");
             var productsByBrand = _dataContext.Products.Where(p => p.BrandId == brand.Id);
             return View(await productsByBrand.OrderByDescending(p => p.Id).ToListAsync());

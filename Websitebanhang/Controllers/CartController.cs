@@ -15,7 +15,7 @@ namespace Websitebanhang.Controllers
 
         public IActionResult cart()
         {
-            List<CartModel> cartItems = HttpContext.Session.getJson<List<CartModel>>("Cart") ?? new List<CartModel>();
+            List<CartModel> cartItems = HttpContext.Session.getJson<List<CartModel>>("Cart") ?? new List<CartModel>();  
             CartViewModel cartViewModel = new CartViewModel
             {
                 CartItems = cartItems,
@@ -31,9 +31,10 @@ namespace Websitebanhang.Controllers
 
         public async Task<IActionResult> Add(int Id)
         {
-            ProductModel product = await _dataContext.Products.FindAsync(Id);
+            ProductModel? product = await _dataContext.Products.FindAsync(Id);
+            if (product == null) return NotFound();
             List<CartModel> cart = HttpContext.Session.getJson<List<CartModel>>("Cart") ?? new List<CartModel>();
-            CartModel cartItems = cart.Where(c => c.ProductId == Id).FirstOrDefault();
+            CartModel? cartItems = cart.Where(c => c.ProductId == Id).FirstOrDefault();
             if (cartItems == null)
             {
                 cart.Add(new CartModel(product));
@@ -49,8 +50,11 @@ namespace Websitebanhang.Controllers
         }
         public async Task<IActionResult> Decrease(int Id)
         {
-            List<CartModel> cart = HttpContext.Session.getJson<List<CartModel>>("Cart");
-            CartModel cartItems = cart.Where(c => c.ProductId == Id).FirstOrDefault();
+            List<CartModel> cart = HttpContext.Session.getJson<List<CartModel>>("Cart") ?? new List<CartModel>();
+            if (cart == null) return RedirectToAction("Index");
+            CartModel? cartItems = cart.Where(c => c.ProductId == Id).FirstOrDefault();
+            if (cartItems == null) return RedirectToAction("Index");
+
             if (cartItems.Quantity > 1)
             {
                 --cartItems.Quantity;
@@ -71,8 +75,16 @@ namespace Websitebanhang.Controllers
         }
         public async Task<IActionResult> Increase(int Id)
         {
-            List<CartModel> cart = HttpContext.Session.getJson<List<CartModel>>("Cart");
-            CartModel cartItems = cart.Where(c => c.ProductId == Id).FirstOrDefault();
+            List<CartModel> cart = HttpContext.Session.getJson<List<CartModel>>("Cart") ?? new List<CartModel>();
+            if (cart == null)
+            {
+                return RedirectToAction("Index"); 
+            }
+            CartModel? cartItems = cart.Where(c => c.ProductId == Id).FirstOrDefault();
+            if (cartItems == null)
+            {
+                return RedirectToAction("Index");
+            }
             if (cartItems.Quantity >= 1)
             {
                 ++cartItems.Quantity;

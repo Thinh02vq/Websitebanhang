@@ -2,12 +2,12 @@
 @{
     ViewData["Title"] = "List Product"; 
 }
-<h1>List Product</h1>
+<h1>Danh sách sản phẩm</h1>
 <a class="btn btn-primary btn-sm" asp-action="Create" asp-controller="Product">Thêm sản phẩm</a>
 <table class="table">
     <thead>
         <tr>
-            <th scope="col">#</th>
+            <th scope="col">Id</th>
             <th scope="col">Tên sản phẩm</th>
             <th scope="col">Mô tả</th>
             <th scope="col">Giá</th>
@@ -26,9 +26,9 @@
                 <td>@item.Name</td>
                 <td>@Html.Raw(@item.Description)</td>
                 <td>@item.Price</td>
-                <td><img src="~/media/products/@item.Image" width="120" ></td>
-                <td>@item.Category.Name</td>
-                <td>@item.Brand.Name</td>
+                <td><img src="~/media/products/@item.Image" width="100" ></td>
+                <td>@item.Category?.Name</td>
+                <td>@item.Brand?.Name</td>
                 <td>@item.Slug</td>
                 <td>
                     <a class="btn btn-warning btn-sm" asp-action="Edit" asp-controller="Product" asp-route-Id="@item.Id">Sửa</a>

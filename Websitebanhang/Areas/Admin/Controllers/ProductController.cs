@@ -64,7 +64,7 @@ namespace Websitebanhang.Areas.Admin.Controllers
                 _dataContext.Products.Add(product);
                 await _dataContext.SaveChangesAsync();
                 TempData["Success"] = "Thêm sản phẩm thành công!";
-                //return RedirectToAction("Index");
+                return RedirectToAction("Index");
             }
             else
             {
@@ -78,15 +78,16 @@ namespace Websitebanhang.Areas.Admin.Controllers
                     }
                 }
                 string errorMessage = string.Join("\n", errors);
-                return BadRequest(errorMessage);
+                return View(product);
             }
 
-            return View(product);
+            
         }
         
         public async Task<IActionResult> Edit(int Id)
         {
-            ProductModel product = await _dataContext.Products.FindAsync(Id);
+            ProductModel? product = await _dataContext.Products.FindAsync(Id);
+            if(product == null) return NotFound();
             ViewBag.Categories = new SelectList(_dataContext.Categories, "Id", "Name", product.CategoryId);
             ViewBag.Brands = new SelectList(_dataContext.Brands, "Id", "Name", product.BrandId);
             return View(product);
@@ -97,10 +98,11 @@ namespace Websitebanhang.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit( ProductModel product)
         {
+            if (product== null) return NotFound();
             ViewBag.Categories = new SelectList(_dataContext.Categories, "Id", "Name", product.CategoryId);
             ViewBag.Brands = new SelectList(_dataContext.Brands, "Id", "Name", product.BrandId);
             var existed_product = _dataContext.Products.Find(product.Id);// Tìm sản phẩm hiện tại trong cơ sở dữ liệu
-
+            if (existed_product == null) return NotFound();
             if (ModelState.IsValid)
             {
                 
@@ -112,23 +114,26 @@ namespace Websitebanhang.Areas.Admin.Controllers
                     string uploadsDir = Path.Combine(_webHostEnvironment.WebRootPath, "media/products");
                     string imageName = Guid.NewGuid().ToString() + "-" + product.ImageUpload.FileName;
                     string filePath = Path.Combine(uploadsDir, imageName);
-                    // Xóa ảnh cũ
-                    string oldfilePath = Path.Combine(uploadsDir, existed_product.Image);
-                    try
+                    // Xóa ảnh cũ   
+                    if (!string.IsNullOrEmpty(existed_product.Image) && existed_product.Image != "noimage.png")
                     {
-                        if (System.IO.File.Exists(oldfilePath))
+                        string oldfilePath = Path.Combine(uploadsDir, existed_product.Image);
+                        try
                         {
-                            System.IO.File.Delete(oldfilePath);
+                            if (System.IO.File.Exists(oldfilePath))
+                            {
+                                System.IO.File.Delete(oldfilePath);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            ModelState.AddModelError("", "Xóa ảnh cũ thất bại: " + ex.Message);
                         }
                     }
-                    catch (Exception ex)
+                    using (var fs = new FileStream(filePath, FileMode.Create))
                     {
-                        ModelState.AddModelError("", "Xóa ảnh cũ thất bại: " + ex.Message);
+                        await product.ImageUpload.CopyToAsync(fs);
                     }
-
-                    FileStream fs = new FileStream(filePath, FileMode.Create);
-                    await product.ImageUpload.CopyToAsync(fs);
-                    fs.Close();
                     existed_product.Image = imageName;
                 }
                 // Cập nhật các thuộc tính của sản phẩm hiện tại với giá trị mới từ form
@@ -142,7 +147,7 @@ namespace Websitebanhang.Areas.Admin.Controllers
                 _dataContext.Products.Update(existed_product);
                 await _dataContext.SaveChangesAsync();
                 TempData["Success"] = "Cập nhật sản phẩm thành công!";
-                //return RedirectToAction("Index");
+                return RedirectToAction("Index");
             }
             else
             {
@@ -156,29 +161,32 @@ namespace Websitebanhang.Areas.Admin.Controllers
                     }
                 }
                 string errorMessage = string.Join("\n", errors);
-                return BadRequest(errorMessage);
+                return View(product);
             }
 
-            return View(product);
+            
         }
        
         public async Task<IActionResult> Delete(int Id)
         {
-            ProductModel product = await _dataContext.Products.FindAsync(Id);
+            ProductModel? product = await _dataContext.Products.FindAsync(Id);
             if (product == null)
             {
                 return NotFound();
             }
+           
                 string uploadsDir = Path.Combine(_webHostEnvironment.WebRootPath, "media/products");
-                string oldfilePath = Path.Combine(uploadsDir, product.Image);
+            
+                string oldfilePath = Path.Combine(uploadsDir, product.Image!);
                 try
                 {
                     if (System.IO.File.Exists(oldfilePath))
                     {
                         System.IO.File.Delete(oldfilePath);
                     }
-                } catch (Exception ex) 
-                { 
+                }
+                catch (Exception ex)
+                {
                     ModelState.AddModelError("", "Xóa ảnh cũ thất bại: " + ex.Message);
                 }
             

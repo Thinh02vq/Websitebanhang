@@ -14,7 +14,7 @@ namespace Websitebanhang.Controllers
         {
             return View();
         }
-        public async Task<IActionResult> details(int Id)
+        public async Task<IActionResult> details(int? Id)
         {
             if (Id == null) return RedirectToAction("product");
              var productById = _dataContext.Products.Where(p => p.Id == Id).FirstOrDefault();

@@ -4,7 +4,7 @@
     {
         public int ProductId { get; set; }
 
-        public string ProductName { get; set; }
+        public string ProductName { get; set; } = string.Empty;
 
         public int Quantity { get; set; }
 
@@ -17,20 +17,19 @@
                 return Quantity * Price;
             }
         }
-        
-        public string Image { get; set; }
+
+        public string Image { get; set; } = string.Empty;
         public CartModel()
         {
-            
-        }
 
+        }
         public CartModel(ProductModel product)
         {
             ProductId = product.Id;
             ProductName = product.Name;
             Price= product.Price;
             Quantity = 1;
-            Image = product.Image;
+            Image = product.Image ?? "noimage.png"; ;
         }
     }
 }
