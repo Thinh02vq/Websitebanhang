@@ -66,10 +66,12 @@
 						</div>
 						<div class="mainmenu pull-left">
 							<ul class="nav navbar-nav collapse navbar-collapse">
-								<li><a asp-controller="Home" class="active">Trang Chủ</a></li>
+								<li><a asp-area="Home" asp-action="Index" asp-controller="Home" class="active">Trang Chủ</a></li>
 								<li><a asp-controller="Product">Sản Phẩm</a></li>
 								<li><a asp-controller="Category">Danh Mục</a></li>
 								<li><a asp-controller="Brand">Thương Hiệu</a></li>
+								<li><a asp-controller="Order">Đơn Hàng</a></li>
+
 							</ul>
 						</div>
 					</div>

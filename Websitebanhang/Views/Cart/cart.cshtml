@@ -52,7 +52,11 @@
 						}
 						<tr>
 							<td colspan="6">Tổng: @Model.GrandTotal.ToString()</td>
-							<td><a clospan="4" class="btn btn-danger btn-sm" asp-controller="Cart" asp-action="Clear"> Xoá Toàn Bộ </a></td>
+							<td><a class="btn btn-danger btn-sm" asp-controller="Cart" asp-action="Clear"> Xoá Toàn Bộ </a></td>
+							@if(User.Identities.Any(identity => identity.IsAuthenticated))
+							{
+								<td><a class="btn btn-primary btn-sm" asp-controller="Checkout" asp-action="checkout"> Thanh Toán </a></td>
+                            }
 						</tr>
 					} else 
 					{

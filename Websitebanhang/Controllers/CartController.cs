@@ -105,7 +105,7 @@ namespace Websitebanhang.Controllers
         }
         public async Task<IActionResult> Remove(int Id)
         {
-            List<CartModel> cart = HttpContext.Session.getJson<List<CartModel>>("Cart");
+            List<CartModel> cart = HttpContext.Session.getJson<List<CartModel>>("Cart") ??new List<CartModel>();
             cart.RemoveAll(p => p.ProductId == Id);
             if (cart.Count == 0)
             {
