@@ -29,11 +29,18 @@
 	<div class="col-sm-8">
 		<div class="shop-menu pull-right">
 			<ul class="nav navbar-nav">
-				<li><a href="#"><i class="fa fa-user"></i> Tài Khoản</a></li>
-				<li><a href="#"><i class="fa fa-star"></i>Danh Sách Mong Muốn </a></li>
-				<li><a href="checkout.html"><i class="fa fa-crosshairs"></i> Thanh Toán</a></li>
 				<li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Giỏ Hàng</a></li>
-				<li><a href="login.html"><i class="fa fa-lock"></i>Đăng Nhập</a></li>
+				@if (User.Identity?.IsAuthenticated ?? false)
+				{
+					<li><a href="#"><i class="fa fa-user"></i> Tài Khoản</a></li>
+					<li><a href="#"><i class="fa fa-star"></i>Danh Sách Mong Muốn </a></li>
+					<li><a href="checkout.html"><i class="fa fa-crosshairs"></i> Thanh Toán</a></li>
+					<li><a asp-action="Logout" asp-controller="Account"><i class="fa fa-lock"></i>Hi, @User.Identity.Name, Đăng Xuất</a></li>
+				}
+				else
+				{
+					<li><a asp-action="Login" asp-controller="Account"><i class="fa fa-lock"></i>Đăng Nhập</a></li>
+				}
 			</ul>
 		</div>
 	</div>
@@ -305,5 +312,7 @@
 	<script src="~/js/price-range.js"></script>
 	<script src="~/js/jquery.prettyPhoto.js"></script>
 	<script src="~/js/main.js"></script>
+
+	@await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
