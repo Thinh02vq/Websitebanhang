@@ -2556,4 +2556,26 @@ h2.title {
 .product-image-wrapper {
     height: 450px;
 }
+/* Container chính chứa 404 */
+.error-container {
+    display: flex;
+    flex-direction: column; /* Xếp theo chiều dọc */
+    align-items: center;    /* Căn giữa theo chiều ngang */
+    justify-content: center; /* Căn giữa theo chiều dọc nếu có chiều cao cụ thể */
+    text-align: center;
+    padding: 100px 20px;     /* Tạo khoảng cách trên dưới */
+    min-height: 60vh;        /* Chiều cao tối thiểu để căn giữa trang */
+}
 
+/* Tiêu đề 404 */
+.error-container h1 {
+    font-size: 32px;
+    margin-bottom: 30px;
+}
+
+/* Phóng to Icon */
+.error-icon {
+    width: 300px;           
+    height: auto;
+    margin-bottom: 50px;    
+}
