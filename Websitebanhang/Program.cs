@@ -72,7 +72,27 @@ app.MapControllerRoute(
     .WithStaticAssets();
 
 // Seed data
-var context = app.Services.CreateScope().ServiceProvider.GetRequiredService<DataContext>();
-SeedData.SeedingData(context);
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<DataContext>();
+    try
+    { 
+        context.Database.Migrate();
+
+        SeedData.SeedingData(context);
+        // Sau khi Migrate xong thì gọi Seed Data
+        var userManager = services.GetRequiredService<UserManager<AppUserModel>>();
+        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
+        
+        SeedData.SeedUsers(userManager, roleManager).Wait(); // Seed User/Role
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "Có lỗi xảy ra trong quá trình Migration dữ liệu.");
+    }
+}
 
 app.Run();

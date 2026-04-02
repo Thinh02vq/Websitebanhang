@@ -1,4 +1,6 @@
-﻿namespace Websitebanhang.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Websitebanhang.Models
 {
     public class OrderDetails
     {
@@ -13,5 +15,8 @@
         public decimal Price { get; set; }
         
         public int Quantity { get; set; }
+
+        [ForeignKey("ProductId")]
+        public ProductModel? Product { get; set; }
     }
 }
