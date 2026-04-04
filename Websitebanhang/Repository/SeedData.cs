@@ -47,26 +47,25 @@ namespace Websitebanhang.Repository
             {
                 await roleManager.CreateAsync(new IdentityRole("Admin"));
             }
-            if (!await roleManager.RoleExistsAsync("Customer"))
+            if (!await roleManager.RoleExistsAsync("Khách Hàng"))
             {
-                await roleManager.CreateAsync(new IdentityRole("Customer"));
+                await roleManager.CreateAsync(new IdentityRole("Khách Hàng"));
             }
-
+            
             // 2. Kiểm tra và tạo Admin mặc định
-            var adminUser = await userManager.FindByEmailAsync("admin@gmail.com");
-            if (adminUser == null)
-            {
-                var newAdmin = new AppUserModel
-                {
-                    UserName = "admin",
-                    Email = "admin@gmail.com",
-                    Occupation = "Administrator",
-                    RoleId = "Admin",
-                    EmailConfirmed = true
-                };
+            var adminUser = new AppUserModel { UserName = "admin", Email = "admin@gmail.com" };
+            var result = await userManager.CreateAsync(adminUser, "Admin@123");
 
-                // Tạo user với mật khẩu, Identity sẽ tự Hash (mã hóa)
-                await userManager.CreateAsync(newAdmin, "Admin@123");
+            if (result.Succeeded)
+            {
+                await userManager.AddToRoleAsync(adminUser, "Admin");
+            }
+            // 3. Kiểm tra và tạo Khách hàng mặc định
+            var user = new AppUserModel { UserName = "khachhang1", Email = "customer@gmail.com" };
+            var customerresult =  await userManager.CreateAsync(user, "Pass123@");
+            if (customerresult.Succeeded)
+            {
+                await userManager.AddToRoleAsync(user, "Khách hàng");
             }
         }
     }

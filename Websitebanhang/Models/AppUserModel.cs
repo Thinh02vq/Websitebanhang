@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Websitebanhang.Models
 {
@@ -7,5 +8,8 @@ namespace Websitebanhang.Models
         public string Occupation { get; set; } = string.Empty;
         
         public string RoleId { get; set; } = string.Empty;
+
+        [NotMapped]
+        public string RoleName { get; set; } = "No Role";
     }
 }

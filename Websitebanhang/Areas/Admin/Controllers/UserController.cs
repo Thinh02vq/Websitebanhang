@@ -13,11 +13,13 @@ namespace Websitebanhang.Areas.Admin.Controllers
     {
         private readonly UserManager<AppUserModel> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly DataContext _dataContext;
 
-        public UserController(UserManager<AppUserModel> userManager, RoleManager<IdentityRole> roleManager)
+        public UserController(UserManager<AppUserModel> userManager, RoleManager<IdentityRole> roleManager, DataContext context)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _dataContext = context;
         }
         private void AddIdentityErrors(IdentityResult identityResult)
         {
@@ -31,7 +33,23 @@ namespace Websitebanhang.Areas.Admin.Controllers
         [Route("Index")]
         public async Task<IActionResult> Index()
         {
-            return View(await _userManager.Users.OrderByDescending(p => p.Id).ToListAsync());
+            // Sử dụng LINQ để join bảng Users, UserRoles và Roles để lấy thông tin user cùng với tên role
+            var usersWithRoles = await (from u in _dataContext.Users
+                                        join ur in _dataContext.UserRoles on u.Id equals ur.UserId into urGroup
+                                        from ur in urGroup.DefaultIfEmpty()
+                                        join r in _dataContext.Roles on ur.RoleId equals r.Id into rGroup
+                                        from r in rGroup.DefaultIfEmpty()
+                                        select new AppUserModel // Tạo một đối tượng AppUserModel mới để chứa thông tin user và role
+                                        {
+                                            Id = u.Id,
+                                            UserName = u.UserName,
+                                            Email = u.Email,
+                                            PasswordHash = u.PasswordHash,
+                                            PhoneNumber = u.PhoneNumber,
+                                            RoleName = r.Name ?? "No Role" 
+                                        }).ToListAsync();
+
+            return View(usersWithRoles);
         }
 
         [HttpGet]
