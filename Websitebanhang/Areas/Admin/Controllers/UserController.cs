@@ -31,10 +31,10 @@ namespace Websitebanhang.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int pg = 1)
         {
             // Sử dụng LINQ để join bảng Users, UserRoles và Roles để lấy thông tin user cùng với tên role
-            var usersWithRoles = await (from u in _dataContext.Users
+            IQueryable<AppUserModel> usersWithRoles = from u in _dataContext.Users
                                         join ur in _dataContext.UserRoles on u.Id equals ur.UserId into urGroup
                                         from ur in urGroup.DefaultIfEmpty()
                                         join r in _dataContext.Roles on ur.RoleId equals r.Id into rGroup
@@ -47,9 +47,26 @@ namespace Websitebanhang.Areas.Admin.Controllers
                                             PasswordHash = u.PasswordHash,
                                             PhoneNumber = u.PhoneNumber,
                                             RoleName = r.Name ?? "No Role" 
-                                        }).ToListAsync();
+                                        };
 
-            return View(usersWithRoles);
+            const int pageSize = 10;
+            if (pg < 1) pg = 1;
+
+            // Tính tổng số lượng bản ghi từ truy vấn trên
+            int recsCount =  await usersWithRoles.CountAsync();
+
+            // Khởi tạo đối tượng Pager (giống logic bên Brand của bạn)
+            var pager = new Paginate(recsCount, pg, pageSize);
+
+            // Tính số bản ghi cần bỏ qua
+            int recSkip = (pg - 1) * pageSize;
+
+            // Thực hiện lấy dữ liệu đã phân trang
+            var data = await usersWithRoles.Skip(recSkip).Take(pager.PageSize).ToListAsync();
+
+            ViewBag.Pager = pager;
+
+            return View(data);
         }
 
         [HttpGet]
@@ -82,6 +99,7 @@ namespace Websitebanhang.Areas.Admin.Controllers
                             ModelState.AddModelError(string.Empty, error.Description);
                         }
                     }
+                    TempData["Success"] = "Tạo User và gán role thành công!";
                     return RedirectToAction("Index", "User");
                 }
                 else

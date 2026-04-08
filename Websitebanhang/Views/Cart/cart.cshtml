@@ -1,71 +1,108 @@
 ﻿@using Websitebanhang.Models.ViewModel
 @model CartViewModel
 
+<section id="cart_items" style="background: #f9f9f9; padding: 40px 0;">
+    <div class="container">
+        <div class="breadcrumbs">
+            <ol class="breadcrumb" style="background: transparent; padding: 0;">
+                <li><a asp-action="Index" asp-controller="Home">Trang chủ</a></li>
+                <li class="active">Giỏ Hàng</li>
+            </ol>
+        </div>
 
-<section id="cart_items">
-	<div class="container">
-		<div class="breadcrumbs">
-			<ol class="breadcrumb">
-				<li><a asp-action="Index" asp-controller="Home">Trang chủ</a></li>
-				<li class="active">Giỏ Hàng</li>
-			</ol>
-		</div>
-		<div class="table-responsive cart_info">
-			<table class="table table-condensed">
-				<thead>
-					<tr class="cart_menu">
-						<td class="image">Hình ảnh</td>
-						<td class="description">Tên sản phẩm</td>
-						<td class="price">Giá bán</td>
-						<td class="quantity">Số lượng</td>
-						<td class="total">Tổng tiền</td>
-						<td></td>
-					</tr>
-				</thead>
-				<tbody>
-					@if(Model.CartItems.Count > 0){
-                    @foreach (var item in Model.CartItems)
-					{
-						<tr>
-							<td class="cart_product">
-								<a href=""><img src="~/media/products/@item.Image" width="80" alt=""></a>
-							</td>
-							<td class="cart_description">
-								<h4><a href="">@item.ProductName</a></h4>
-							</td>
-							<td class="cart_price">
-								<p>@item.Price</p>
-							</td>
-							<td>
-									<a class="btn btn-default btn-sm" asp-controller="Cart" asp-action="Increase" asp-route-Id="@item.ProductId"> + </a>
-									<input class="cart_quantity_input" type="text" name="quantity" value="@item.Quantity" autocomplete="off" size="2">
-									<a class="btn btn-success btn-sm" asp-controller="Cart" asp-action="Decrease" asp-route-Id="@item.ProductId"> - </a>
-									<a class="btn btn-danger btn-sm" asp-controller="Cart" asp-action="Remove" asp-route-Id="@item.ProductId"> Xoá </a>
-							</td>
-							<td class="cart_total">
-								<p class="cart_total_price">@Model.CartItems.Where(x => x.ProductId == item.ProductId).Sum(x => x.Quantity * x.Price).ToString()</p>
-							</td>
-							<td class="cart_delete">
-								<a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
-							</td>
-						</tr>
-						}
-						<tr>
-							<td colspan="6">Tổng: @Model.GrandTotal.ToString()</td>
-							<td><a class="btn btn-danger btn-sm" asp-controller="Cart" asp-action="Clear"> Xoá Toàn Bộ </a></td>
-							@if(User.Identities.Any(identity => identity.IsAuthenticated))
-							{
-								<td><a class="btn btn-primary btn-sm" asp-controller="Checkout" asp-action="checkout"> Thanh Toán </a></td>
+        <div class="row">
+            @if (Model.CartItems.Count > 0)
+            {
+                <div class="col-sm-8">
+                    <div class="table-responsive shadow-sm" style="background: #fff; border-radius: 8px; padding: 20px;">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr style="background: #FE980F; color: #fff;">
+                                    <th>Sản phẩm</th>
+                                    <th></th>
+                                    <th>Giá</th>
+                                    <th>Số lượng</th>
+                                    <th>Tổng</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.CartItems)
+                                {
+                                    <tr>
+                                        <td>
+                                            <img src="~/media/products/@item.Image" width="70" height="70" style="object-fit: cover; border-radius: 5px;" alt="">
+                                            </td>
+                                            <td style="vertical-align: middle;">
+                                                <h5 style="margin: 0;">@item.ProductName</h5>
+                                            </td>
+                                            <td style="vertical-align: middle;">@item.Price.ToString("#,##0") ₫</td>
+                                            <td style="vertical-align: middle;">
+                                                <div class="input-group" style="width: 110px;">
+                                                    <span class="input-group-btn">
+                                                        <a class="btn btn-default btn-sm" asp-action="Decrease" asp-route-Id="@item.ProductId">-</a>
+                                                    </span>
+                                                    <input type="text" class="form-control input-sm text-center" value="@item.Quantity" readonly>
+                                                    <span class="input-group-btn">
+                                                        <a class="btn btn-default btn-sm" asp-action="Increase" asp-route-Id="@item.ProductId">+</a>
+                                                    </span>
+                                                </div>
+                                            </td>
+                                            <td style="vertical-align: middle; font-weight: bold; color: #FE980F;">
+                                                @((item.Quantity * item.Price).ToString("#,##0")) ₫
+                                            </td>
+                                            <td style="vertical-align: middle;">
+                                                <a class="text-danger" asp-action="Remove" asp-route-Id="@item.ProductId">
+                                                    <i class="fa fa-trash-o" style="font-size: 18px;"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                            <div class="text-right">
+                                <a class="btn btn-link text-danger" asp-action="Clear">Xoá toàn bộ giỏ hàng</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <div class="shadow-sm" style="background: #fff; border-radius: 8px; padding: 20px;">
+                            <h4 style="border-bottom: 2px solid #eee; padding-bottom: 10px;">Tóm tắt đơn hàng</h4>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Tạm tính:</span>
+                                <span class="pull-right">@Model.GrandTotal.ToString("#,##0") ₫</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Phí vận chuyển:</span>
+                                <span class="pull-right text-success">Miễn phí</span>
+                            </div>
+                            <hr>
+                            <div class="mb-3">
+                                <h4 style="color: #FE980F;">Tổng cộng: <span class="pull-right">@Model.GrandTotal.ToString("#,##0") ₫</span></h4>
+                            </div>
+
+                            @if (User.Identity != null && User.Identity.IsAuthenticated)
+                            {
+                                <a class="btn btn-warning btn-block" style="background: #FE980F; color: #fff; font-weight: bold; padding: 12px;" asp-controller="Checkout" asp-action="Checkout">THANH TOÁN NGAY</a>
                             }
-						</tr>
-					} else 
-					{
-					<tr>
-						<td colspan="6" class="text-center">Giỏ hàng của trống!</td>
-					</tr>
-					}
-				</tbody>
-			</table>
-		</div>
-	</div>
-</section> <!--/#cart_items-->
+                            else
+                            {
+                                <p class="text-muted" style="font-size: 12px; margin-bottom: 10px;">Vui lòng đăng nhập để thanh toán</p>
+                                <a class="btn btn-default btn-block" asp-controller="Account" asp-action="Login" asp-route-returnUrl="/Cart">ĐĂNG NHẬP</a>
+                            }
+                            <a class="btn btn-link btn-block text-muted" asp-controller="Home" asp-action="Index">Tiếp tục mua sắm</a>
+                        </div>
+                    </div>
+                }
+            else
+                {
+                    <div class="col-sm-12 text-center" style="padding: 50px 0;">
+                        <i class="fa fa-shopping-cart" style="font-size: 80px; color: #ddd;"></i>
+                        <h3 class="mt-4">Giỏ hàng của bạn đang trống!</h3>
+                        <a class="btn btn-warning mt-3" asp-controller="Home" asp-action="Index" style="background: #FE980F; color:#fff">MUA SẮM NGAY</a>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>

@@ -21,9 +21,20 @@ namespace Websitebanhang.Areas.Admin.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int pg = 1)
         {
-            return View(await _dataContext.Roles.OrderByDescending(p => p.Id).ToListAsync());
+            List<IdentityRole> roles = _dataContext.Roles.ToList();
+            const int pageSize = 10;
+            if (pg < 1)
+            {
+                pg = 1;
+            }
+            int recsCount = roles.Count();
+            var pager = new Paginate(recsCount, pg, pageSize);
+            var recSkip = (pg - 1) * pageSize;
+            var data = roles.Skip(recSkip).Take(pager.PageSize).ToList();
+            ViewBag.Pager = pager;
+            return View(data);// 
         }
 
 

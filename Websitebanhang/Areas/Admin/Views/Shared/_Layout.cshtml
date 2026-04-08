@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@{
+	// Lấy tên Controller và Action hiện tại từ RouteData
+	var currentController = ViewContext.RouteData.Values["Controller"]?.ToString();
+	var currentAction = ViewContext.RouteData.Values["Action"]?.ToString();
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
@@ -7,7 +12,8 @@
 	<meta name="author" content="">
 	<title>@ViewData["title"] - Admin Areas</title>
 	<link href="~/css/bootstrap.min.css" rel="stylesheet">
-		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" rel="stylesheet">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" rel="stylesheet">
+	<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.26.24/dist/sweetalert2.min.css" rel="stylesheet">
 	<link href="~/css/prettyPhoto.css" rel="stylesheet">
 	<link href="~/css/price-range.css" rel="stylesheet">
 	<link href="~/css/animate.css" rel="stylesheet">
@@ -40,18 +46,38 @@
 								<span class="icon-bar"></span>
 							</button>
 						</div>
-						<div class="mainmenu pull-left">
-							<ul class="nav navbar-nav collapse navbar-collapse">
-								<li><a asp-area="Home" asp-action="Index" asp-controller="Home" class="active">Trang Chủ</a></li>
-								<li><a asp-area="Admin" asp-controller="Product">Sản Phẩm</a></li>
-								<li><a asp-area="Admin" asp-controller="Category">Danh Mục</a></li>
-								<li><a asp-area="Admin" asp-controller="Brand">Thương Hiệu</a></li>
-								<li><a asp-area="Admin" asp-controller="Order">Đơn Hàng</a></li>
-								<li><a asp-area="Admin" asp-controller="User">User</a></li>
-								<li><a asp-area="Admin" asp-controller="Role">Role</a></li>
-							</ul>
-						</div>
-					</div>
+					<div class="mainmenu pull-left">
+						<ul class="nav navbar-nav collapse navbar-collapse">
+							<li>
+								<a asp-area="" asp-controller="Home" asp-action="Index" 
+								   class="@(currentController == "Home" ? "active" : "")">Trang Chủ</a>
+							</li>
+							<li>
+								<a asp-area="Admin" asp-controller="Product" asp-action="Index" 
+								   class="@(currentController == "Product" ? "active" : "")">Sản Phẩm</a>
+							</li>
+							<li>
+								<a asp-area="Admin" asp-controller="Category" asp-action="Index" 
+								   class="@(currentController == "Category" ? "active" : "")">Danh Mục</a>
+							</li>
+							<li>
+								<a asp-area="Admin" asp-controller="Brand" asp-action="Index" 
+								   class="@(currentController == "Brand" ? "active" : "")">Thương Hiệu</a>
+							</li>
+							<li>
+								<a asp-area="Admin" asp-controller="Order" asp-action="Index" 
+								   class="@(currentController == "Order" ? "active" : "")">Đơn Hàng</a>
+							</li>
+							<li>
+								<a asp-area="Admin" asp-controller="User" asp-action="Index" 
+								   class="@(currentController == "User" ? "active" : "")">User</a>
+							</li>
+							<li>
+								<a asp-area="Admin" asp-controller="Role" asp-action="Index" 
+								   class="@(currentController == "Role" ? "active" : "")">Role</a>
+							</li>
+						</ul>
+				</div>
 					<div class="col-sm-3">
 						<div class="search_box pull-right">
 							<input type="text" placeholder="Search" />
@@ -59,7 +85,8 @@
 					</div>
 				</div>
 			</div>
-		</div><!--/header-bottom-->
+		</div>
+	</div><!--/header-bottom-->
 	</header><!--/header-->
 	
 	<section>
@@ -78,6 +105,42 @@
 	<script src="~/js/jquery.prettyPhoto.js"></script>
 	<script src="~/js/main.js"></script>
 	<script src="~/Backend/js/site.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.26.24/dist/sweetalert2.all.min.js"></script>
+	<script>
+    $(function(){
+       var errorMessage = "@Html.Raw(TempData["Error"])";
+        var successMessage = "@Html.Raw(TempData["Success"])";
+
+        if (errorMessage !== "") {
+            Swal.fire({
+                icon: 'error',
+                html: '<p style="font-size: 18px;">' + errorMessage + '</p>'
+            });
+        }
+
+        if (successMessage !== "") {
+            Swal.fire({
+                icon: 'success',
+                html: '<p style="font-size: 18px;">' + successMessage + '</p>', // Chèn style trực tiếp
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'OK'
+            });
+        }
+    });
+</script>
+<script>
+    if ($.validator) {
+        $.extend($.validator.messages, {
+            required: "Trường này không được để trống.",
+            email: "Vui lòng nhập đúng định dạng email.",
+            number: "Vui lòng nhập số.",
+            digits: "Vui lòng chỉ nhập chữ số.",
+            equalTo: "Mật khẩu nhập lại không khớp.",
+            maxlength: $.validator.format("Vui lòng không nhập quá {0} ký tự."),
+            minlength: $.validator.format("Vui lòng nhập ít nhất {0} ký tự.")
+        });
+    }
+</script>
 	@await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

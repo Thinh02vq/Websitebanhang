@@ -44,6 +44,15 @@
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        <script>
+            $(document).ready(function () {
+                if ($.validator) {
+                    $.extend($.validator.messages, {
+                        required: "Thông tin này không được để trống."
+                    });
+                }
+            });
+        </script>
     }
 }
 
