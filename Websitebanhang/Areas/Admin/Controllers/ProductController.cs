@@ -9,7 +9,7 @@ using Websitebanhang.Repository;
 namespace Websitebanhang.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class ProductController : Controller
     {
         private readonly DataContext _dataContext;
@@ -32,7 +32,7 @@ namespace Websitebanhang.Areas.Admin.Controllers
             return View();
         }
 
-        
+        [Route("Admin/Product/Create")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ProductModel product)
@@ -84,6 +84,7 @@ namespace Websitebanhang.Areas.Admin.Controllers
 
             
         }
+
         
         public async Task<IActionResult> Edit(int Id)
         {
@@ -94,7 +95,7 @@ namespace Websitebanhang.Areas.Admin.Controllers
             return View(product);
         }
 
-        
+        [Route("Admin/Product/Edit/{id}")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit( ProductModel product)
@@ -167,7 +168,8 @@ namespace Websitebanhang.Areas.Admin.Controllers
 
             
         }
-       
+
+        [Route("Admin/Product/Delete/{id}")]
         public async Task<IActionResult> Delete(int Id)
         {
             ProductModel? product = await _dataContext.Products.FindAsync(Id);

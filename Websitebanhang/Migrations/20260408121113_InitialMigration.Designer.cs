@@ -12,8 +12,8 @@ using Websitebanhang.Repository;
 namespace Websitebanhang.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20260402172642_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20260408121113_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

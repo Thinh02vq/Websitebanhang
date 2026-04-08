@@ -5,7 +5,7 @@
 }
 <h3> Sửa sản phẩm</h3>
 <div class="col-md-6">
-    <form asp-action="Edit" method="post" enctype="multipart/form-data">
+    <form asp-area="Admin" asp-action="Edit" method="post" enctype="multipart/form-data">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
             <label>Tên sản phẩm</label>

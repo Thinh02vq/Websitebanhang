@@ -7,7 +7,7 @@ using Websitebanhang.Repository;
 namespace Websitebanhang.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class CategoryController : Controller
     {
         private readonly DataContext _dataContext;
@@ -16,20 +16,34 @@ namespace Websitebanhang.Areas.Admin.Controllers
             _dataContext = context;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int pg=1)
         {
-            return View(await _dataContext.Categories.OrderByDescending(p => p.Id).ToListAsync());// Truy vấn tất cả danh mục, sắp xếp theo Id giảm dần
+            List<CategoryModel> category = _dataContext.Categories.ToList();
+            const int pageSize = 10;
+            if (pg < 1) 
+            {
+                pg = 1;
+            }
+            int recsCount = category.Count();
+            var pager = new Paginate(recsCount, pg, pageSize);
+            var recSkip = (pg - 1) * pageSize;
+            var data = category.Skip(recSkip).Take(pager.PageSize).ToList();
+            ViewBag.Pager = pager;
+            return View(data);// 
         }
         public async Task<IActionResult> Edit(int Id)
         {
             CategoryModel? category = await _dataContext.Categories.FindAsync(Id);
             return View(category);
         }
+
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
         }
 
+        [Route("Admin/Category/Create")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CategoryModel category)
@@ -65,6 +79,7 @@ namespace Websitebanhang.Areas.Admin.Controllers
             
         }
 
+        [Route("Admin/Category/Edit/{Id}")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(CategoryModel category)
@@ -100,6 +115,7 @@ namespace Websitebanhang.Areas.Admin.Controllers
             
         }
 
+        [Route("Admin/Category/Delete/{Id}")]
         public async Task<IActionResult> Delete(int Id)
         {
             CategoryModel? category = await _dataContext.Categories.FindAsync(Id);

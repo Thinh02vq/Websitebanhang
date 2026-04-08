@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +9,7 @@ using Websitebanhang.Repository;
 namespace Websitebanhang.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Route("Admin/User")]
+    [Authorize(Roles = "Admin")]
     public class UserController : Controller
     {
         private readonly UserManager<AppUserModel> _userManager;
@@ -30,7 +31,6 @@ namespace Websitebanhang.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        [Route("Index")]
         public async Task<IActionResult> Index()
         {
             // Sử dụng LINQ để join bảng Users, UserRoles và Roles để lấy thông tin user cùng với tên role
@@ -53,16 +53,16 @@ namespace Websitebanhang.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        [Route("Create")]
         public async Task<IActionResult> Create()
         {
             var roles = await _roleManager.Roles.ToListAsync();
             ViewBag.Roles = new SelectList(roles, "Id", "Name");
             return View(new AppUserModel());
         }
+
+        [Route("Admin/User/Create")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("Create")]
         public async Task<IActionResult> Create(AppUserModel user)
         {
             if (ModelState.IsValid)
@@ -109,7 +109,6 @@ namespace Websitebanhang.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        [Route("Edit")]
         public async Task<IActionResult> Edit(string Id)
         {
             if (string.IsNullOrEmpty(Id))
@@ -126,44 +125,58 @@ namespace Websitebanhang.Areas.Admin.Controllers
             return View(user);
         }
 
+        [Route("Admin/User/Edit/{Id}")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("Edit")]
         public async Task<IActionResult> Edit(string Id, AppUserModel user)
         {
-            var existingUser = await _userManager.FindByIdAsync(Id);// Tìm user theo Id
-            if (existingUser == null)
+            var existingUser = await _userManager.FindByIdAsync(Id);
+            if (existingUser == null) return NotFound();
+
+            if (ModelState.IsValid)
             {
-                return NotFound();
-            }
-            if(ModelState.IsValid)
-            {
+                // 1. Cập nhật thông tin cơ bản
                 existingUser.UserName = user.UserName;
                 existingUser.Email = user.Email;
                 existingUser.PhoneNumber = user.PhoneNumber;
-                existingUser.RoleId = user.RoleId;
+
                 var updateUserResult = await _userManager.UpdateAsync(existingUser);
+
                 if (updateUserResult.Succeeded)
                 {
+                    // 2. XỬ LÝ ROLE (Quan trọng nhất ở đây)
+
+                    // Lấy danh sách Role hiện tại của User (ví dụ đang là "Sales")
+                    var currentRoles = await _userManager.GetRolesAsync(existingUser);
+
+                    // Tìm thông tin Role mới từ RoleId mà bạn chọn ở Dropdown (ví dụ "Khách hàng")
+                    var newRole = await _roleManager.FindByIdAsync(user.RoleId);
+
+                    if (newRole != null)
+                    {
+                        // Bước A: Xóa toàn bộ Role cũ của User này
+                        await _userManager.RemoveFromRolesAsync(existingUser, currentRoles);
+
+                        // Bước B: Thêm Role mới vào cho User
+                        await _userManager.AddToRoleAsync(existingUser, newRole.Name!);
+                    }
+
+                    TempData["Success"] = "Cập nhật User và Quyền thành công!";
                     return RedirectToAction("Index", "User");
                 }
                 else
                 {
                     AddIdentityErrors(updateUserResult);
-                    return View(existingUser);
                 }
             }
+
+            // Nếu có lỗi, load lại Roles cho View
             var roles = await _roleManager.Roles.ToListAsync();
             ViewBag.Roles = new SelectList(roles, "Id", "Name");
-
-            TempData["Error"] = "Vui lòng nhập đầy đủ thông tin.";
-            var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
-            string errorMessage = string.Join("\n ", errors);
             return View(existingUser);
         }
 
-        [HttpGet]
-        [Route("Delete")]
+        [Route("Admin/User/Delete/{Id}")]
         public async Task<IActionResult> Delete(string Id)
         {
             if (string.IsNullOrEmpty(Id))

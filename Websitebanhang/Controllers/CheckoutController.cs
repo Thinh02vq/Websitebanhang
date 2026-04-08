@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Websitebanhang.Models;
 using Websitebanhang.Repository;
@@ -8,11 +9,13 @@ namespace Websitebanhang.Controllers
     public class CheckoutController : Controller
     {
         private readonly DataContext _dataContext;
-        public CheckoutController(DataContext context)
+        private readonly IEmailSender _emailSender;
+        public CheckoutController(DataContext context, IEmailSender emailSender)
         {
             _dataContext = context;
+            _emailSender = emailSender;
         }
-        public IActionResult checkout()
+        public async Task<IActionResult> checkout()
         {
             var userEmail = User.FindFirstValue(ClaimTypes.Email);// Lấy email của người dùng đã đăng nhập
             if (userEmail == null)
@@ -42,6 +45,13 @@ namespace Websitebanhang.Controllers
                     _dataContext.SaveChanges();
                 }
                 HttpContext.Session.Remove("Cart");
+                // Gửi email thông báo cho người dùng
+                var receiver = userEmail;
+                var subject = "Đặt hàng thành công";
+                var message = "Đơn hàng của bạn đã được đặt thành công!";
+
+                await _emailSender.SendEmailAsync(receiver, subject, message);
+
                 TempData["Success"] = "Đặt hàng thành công chờ duyệt đơn hàng!";
                 return RedirectToAction("cart", "Cart");
             }

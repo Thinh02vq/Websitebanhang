@@ -7,7 +7,7 @@ using Websitebanhang.Repository;
 namespace Websitebanhang.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class BrandController : Controller
     {
         private readonly DataContext _dataContext;
@@ -19,16 +19,21 @@ namespace Websitebanhang.Areas.Admin.Controllers
         {
             return View(await _dataContext.Brands.OrderByDescending(p => p.Id).ToListAsync());
         }
+
+        
         public async Task<IActionResult> Create ()
         {
             return View();
         }
+
+        
         public async Task<IActionResult> Edit(int Id)
         {
             BrandModel? brand = await _dataContext.Brands.FindAsync(Id);
             return View(brand);
         }
 
+        [Route("Admin/Brand/Create")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(BrandModel brand)
@@ -62,6 +67,8 @@ namespace Websitebanhang.Areas.Admin.Controllers
                 return View(brand);
             } 
         }
+
+        [Route("Admin/Brand/Edit/{Id}")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(BrandModel brand)
@@ -72,12 +79,12 @@ namespace Websitebanhang.Areas.Admin.Controllers
                 var slug = await _dataContext.Brands.FirstOrDefaultAsync(p => p.Slug == brand.Slug);
                 if (slug != null)
                 {
-                    ModelState.AddModelError("", "Danh mục đã tồn tại!");
+                    ModelState.AddModelError("", "Thương hiệu đã tồn tại!");
                     return View(brand);
                 }
                 _dataContext.Brands.Update(brand);
                 await _dataContext.SaveChangesAsync();
-                TempData["Success"] = "Cập nhật danh mục thành công!";
+                TempData["Success"] = "Cập nhật thương hiệu thành công!";
                 return RedirectToAction("Index");
             }
             else
@@ -96,6 +103,8 @@ namespace Websitebanhang.Areas.Admin.Controllers
             }
 
         }
+
+        [Route("Admin/Brand/Delete/{Id}")]
         public async Task<IActionResult> Delete(int Id)
         {
             BrandModel? brand = await _dataContext.Brands.FindAsync(Id);

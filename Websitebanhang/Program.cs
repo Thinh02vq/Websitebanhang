@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using Websitebanhang.Areas.Admin.Repository;
 using Websitebanhang.Models;
 using Websitebanhang.Repository;
 
@@ -7,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // connection DB
 builder.Services.AddDbContext<DataContext>(options =>options.UseSqlServer(builder.Configuration.GetConnectionString("connectDB")));
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
@@ -20,6 +23,9 @@ builder.Services.AddSession(options =>
 
 builder.Services.AddIdentity<AppUserModel, IdentityRole>()
     .AddEntityFrameworkStores<DataContext>().AddDefaultTokenProviders();
+
+//Add Email Sender
+builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
@@ -45,6 +51,7 @@ if (!app.Environment.IsDevelopment())
 app.UseRouting();
 
 app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.MapStaticAssets();

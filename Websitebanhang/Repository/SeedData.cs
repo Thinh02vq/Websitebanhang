@@ -42,30 +42,68 @@ namespace Websitebanhang.Repository
         }
         public static async Task SeedUsers(UserManager<AppUserModel> userManager, RoleManager<IdentityRole> roleManager)
         {
-            // 1. Kiểm tra và tạo Role nếu chưa có
-            if (!await roleManager.RoleExistsAsync("Admin"))
-            {
-                await roleManager.CreateAsync(new IdentityRole("Admin"));
-            }
-            if (!await roleManager.RoleExistsAsync("Khách Hàng"))
-            {
-                await roleManager.CreateAsync(new IdentityRole("Khách Hàng"));
-            }
-            
-            // 2. Kiểm tra và tạo Admin mặc định
-            var adminUser = new AppUserModel { UserName = "admin", Email = "admin@gmail.com" };
-            var result = await userManager.CreateAsync(adminUser, "Admin@123");
+            // 1. Danh sách Role cần tạo
+            string[] roleNames = { "Admin", "Khách hàng" };
 
-            if (result.Succeeded)
+            foreach (var roleName in roleNames)
             {
-                await userManager.AddToRoleAsync(adminUser, "Admin");
+                if (!await roleManager.RoleExistsAsync(roleName))
+                {
+                    // Khởi tạo đối tượng Role
+                    var role = new IdentityRole(roleName);
+
+                    // TỰ GÁN: Đảm bảo không bị null trong DB
+                    role.NormalizedName = roleName.ToUpper();
+                    role.ConcurrencyStamp = Guid.NewGuid().ToString();
+
+                    await roleManager.CreateAsync(role);
+                }
             }
-            // 3. Kiểm tra và tạo Khách hàng mặc định
-            var user = new AppUserModel { UserName = "khachhang1", Email = "customer@gmail.com" };
-            var customerresult =  await userManager.CreateAsync(user, "Pass123@");
-            if (customerresult.Succeeded)
+
+            // 2. Tạo Admin mặc định
+            var adminEmail = "admin@gmail.com";
+            var adminUser = await userManager.FindByEmailAsync(adminEmail);
+
+            if (adminUser == null)
             {
-                await userManager.AddToRoleAsync(user, "Khách hàng");
+                var newAdmin = new AppUserModel
+                {
+                    UserName = "admin",
+                    Email = adminEmail,
+                    EmailConfirmed = true,
+                    // Các trường kỹ thuật quan trọng của User
+                    ConcurrencyStamp = Guid.NewGuid().ToString(),
+                    SecurityStamp = Guid.NewGuid().ToString()
+                };
+
+                var result = await userManager.CreateAsync(newAdmin, "Admin@123");
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(newAdmin, "Admin");
+                }
+            }
+
+            // 3. Tạo Khách hàng mặc định
+            var customerEmail = "customer@gmail.com";
+            var customerUser = await userManager.FindByEmailAsync(customerEmail);
+
+            if (customerUser == null)
+            {
+                var newCustomer = new AppUserModel
+                {
+                    UserName = "khachhang1",
+                    Email = customerEmail,
+                    EmailConfirmed = true,
+                    ConcurrencyStamp = Guid.NewGuid().ToString(),
+                    SecurityStamp = Guid.NewGuid().ToString()
+                };
+
+                var result = await userManager.CreateAsync(newCustomer, "Pass123@");
+                if (result.Succeeded)
+                {
+                    // Lưu ý: Tên Role gán ở đây phải khớp 100% với tên tạo ở Bước 1
+                    await userManager.AddToRoleAsync(newCustomer, "Khách hàng");
+                }
             }
         }
     }

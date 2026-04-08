@@ -6,7 +6,7 @@ using Websitebanhang.Repository;
 namespace Websitebanhang.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class OrderController : Controller
     {
         private readonly DataContext _dataContext;
