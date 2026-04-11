@@ -28,7 +28,7 @@ namespace Websitebanhang.Controllers
         {
             return View("~/Views/Checkout/checkout.cshtml");
         }
-
+        [HttpPost]
         public async Task<IActionResult> Add(int Id)
         {
             ProductModel? product = await _dataContext.Products.FindAsync(Id);
@@ -44,6 +44,11 @@ namespace Websitebanhang.Controllers
                 cartItems.Quantity += 1;
             }
             HttpContext.Session.setJson("Cart", cart);
+            
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")// Kiểm tra nếu là yêu cầu AJAX
+            {
+                return Json(new { success = true, message = "Thêm sản phẩm thành công!", cartCount = cart.Sum(x => x.Quantity) });
+            }
 
             TempData["Success"] = "Thêm sản phẩm vào giỏ hàng thành công!";
             return Redirect(Request.Headers["Referer"].ToString());

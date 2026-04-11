@@ -12,7 +12,7 @@
 }
 <h1>Danh Mục</h1>
 <a class="btn btn-primary btn-sm" asp-area="Admin" asp-action="Create" asp-controller="Category">Thêm danh mục</a>
-<table class="table">
+<table class="table" id="categoryTable">
     <thead>
         <tr>
             <th scope="col">Id</th>
@@ -50,3 +50,8 @@
     </tbody>
 </table>
 <partial name="_Paging" model="@pager" />
+@section Scripts {
+    <script>
+        let table = new DataTable('#categoryTable');
+    </script>
+}

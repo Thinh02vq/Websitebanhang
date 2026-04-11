@@ -8,6 +8,7 @@
 	<title>Trang Chủ | E-Shopper</title>
 	<link href="~/css/bootstrap.min.css" rel="stylesheet">
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" rel="stylesheet">
+	<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.26.24/dist/sweetalert2.min.css" rel="stylesheet">
 	<link href="~/css/prettyPhoto.css" rel="stylesheet">
 	<link href="~/css/price-range.css" rel="stylesheet">
 	<link href="~/css/animate.css" rel="stylesheet">
@@ -83,9 +84,12 @@
 						</div>
 					</div>
 					<div class="col-sm-3">
+						<form asp-controller="Product" asp-action="Search" method="post">
 						<div class="search_box pull-right">
-							<input type="text" placeholder="Search" />
+							<input type="text" placeholder="Search" name="searchTerm"/>
+							<button type="submit" class="btn btn-warning">Search</button>
 						</div>
+						</form>
 					</div>
 				</div>
 			</div>
@@ -312,6 +316,7 @@
 	<script src="~/js/price-range.js"></script>
 	<script src="~/js/jquery.prettyPhoto.js"></script>
 	<script src="~/js/main.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.26.24/dist/sweetalert2.all.min.js"></script>
 
 	@await RenderSectionAsync("Scripts", required: false)
 </body>

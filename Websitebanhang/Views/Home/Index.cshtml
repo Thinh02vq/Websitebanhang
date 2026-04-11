@@ -21,7 +21,7 @@
 							<p>Danh Mục: @item.Category?.Name</p>
 							<p>Thương Hiệu: @item.Brand?.Name</p>
 							</a>
-							<a class="btn btn-default add-to-cart" asp-action="Add" asp-controller="Cart" asp-route-id="@item.Id"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+							<a class="btn btn-default add-to-cart" data-product_id="@item.Id"><i class="fa fa-shopping-cart"></i>Thêm giỏ hàng</a>
 						</div>
 					</div>
 					<div class="choose">
@@ -35,4 +35,22 @@
 			}
 		</div><!--features_items-->						
 	</div>
-	
+	@section Scripts {
+		<script>
+			$(document).ready(function () {
+				$(".add-to-cart").click(function () {
+					var Id = $(this).data("product_id");
+					$.ajax({
+						url: '@Url.Action("Add", "Cart")',
+						type: 'POST',
+						data: { Id: Id },
+						success: function (result) {
+							if (result.success) {
+								Swal.fire("Sản phẩm đã được thêm vào giỏ hàng.","", "success");
+							}
+						}
+					});
+				});
+			});
+		</script>
+	}
