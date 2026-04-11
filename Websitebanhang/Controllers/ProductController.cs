@@ -18,7 +18,18 @@ namespace Websitebanhang.Controllers
         public async Task<IActionResult> details(int? Id)
         {
             if (Id == null) return RedirectToAction("product");
-            var productById = _dataContext.Products.Where(p => p.Id == Id).FirstOrDefault();
+            var productById = await _dataContext.Products.FirstOrDefaultAsync(p => p.Id == Id);
+            if (productById == null)
+            {
+                return NotFound(); 
+            }
+            var relatedProducts = await _dataContext.Products
+                .Include(p => p.Category)
+                .Include(p => p.Brand)
+                .Where(p => p.CategoryId == productById.CategoryId && p.Id != productById.Id)
+                .Take(4)
+                .ToListAsync();
+            ViewBag.RelatedProducts = relatedProducts;
             return View(productById);
         }
 
