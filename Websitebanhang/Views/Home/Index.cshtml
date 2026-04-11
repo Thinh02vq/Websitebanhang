@@ -16,7 +16,7 @@
 						<div class="productinfo text-center">
 							<a asp-action="details" asp-controller="Product" asp-route-Id ="@item.Id">
 							<img src="~/media/products/@item.Image" alt="@item.Name" style="width: 100px;" />
-							<h2>$@item.Price</h2>
+							<h2>$@item.Price.ToString("#,##0") ₫</h2>
 							<p>@item.Name</p>
 							<p>Danh Mục: @item.Category?.Name</p>
 							<p>Thương Hiệu: @item.Brand?.Name</p>
