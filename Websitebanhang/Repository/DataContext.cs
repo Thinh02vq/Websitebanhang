@@ -26,6 +26,8 @@ namespace Websitebanhang.Repository
 
         public DbSet<OrderDetails> OrderDetails { get; set; }
 
-        public DbSet<RaitingModel> Raitings { get; set; }
+        public DbSet<RaitingModel> Raitings { get; set; } 
+        
+        public DbSet<SliderModel> Sliders { get; set; }
     }
 }

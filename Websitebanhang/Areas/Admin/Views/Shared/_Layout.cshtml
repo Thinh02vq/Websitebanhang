@@ -77,12 +77,19 @@
 								<a asp-area="Admin" asp-controller="Role" asp-action="Index" 
 								   class="@(currentController == "Role" ? "active" : "")">Role</a>
 							</li>
+							<li>
+								<a asp-area="Admin" asp-controller="Slider" asp-action="Index" 
+								   class="@(currentController == "Slider" ? "active" : "")">Slider</a>
+							</li>
 						</ul>
 				</div>
-					<div class="col-sm-3">
+					<div class="col-sm-4">
+						<form asp-controller="Product" asp-action="Search" method="post">
 						<div class="search_box pull-right">
-							<input type="text" placeholder="Search" />
+							<input type="text" placeholder="Search" name="searchTerm"/>
+							<button type="submit" class="btn btn-warning">Search</button>
 						</div>
+						</form>
 					</div>
 				</div>
 			</div>

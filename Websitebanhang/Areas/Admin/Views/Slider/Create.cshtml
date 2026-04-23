@@ -1,0 +1,61 @@
+﻿@model SliderModel
+
+@{
+    ViewData["Title"] = "Create Slider";
+}
+<h3> Thêm slider</h3>
+<div class="col-md-9">
+<form asp-area="Admin" asp-action="Create" asp-controller="Slider" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+        <label>Tên slider</label>
+        <input asp-for="Name" class="form-control"/>
+        <span asp-validation-for="Name" class=" text-danger"/>
+    </div>
+    <div class="form-group">
+        <label>Mô tả</label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class=" text-danger"/>
+    </div>
+    <div class="form-group">
+        <label>Hình ảnh</label>
+        <input type="file" asp-for="ImageUpload" class="form-control"/>
+        <span asp-validation-for="ImageUpload" class=" text-danger"/>
+        <img id="imgpreview" class="pt-2"/>
+    </div>
+    <div class="form-group">
+        <label>Trạng thái</label>
+        <select asp-for="Status" class="form-control">
+            <option value="1">Hiển thị</option>
+            <option value="0">Ẩn</option>
+        </select>
+    </div>
+   <div class="form-group">
+        <button class="btn btn-primary">Thêm slider </button>
+    </div>
+</form>
+ <a asp-action="Index" class="btn btn-danger">Trở lại danh sách slider </a>
+</div>
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+    <script> 
+        $("#ImageUpload").change(function(){
+            readURL(this);
+        })
+    </script>
+    // Sửa lại đoạn script trong View của bạn
+<script>
+    CKEDITOR.replace('Description');
+
+    // Đảm bảo dữ liệu được cập nhật khi submit form
+    $("form").submit(function() {
+        if (CKEDITOR.instances['Description']) {
+            CKEDITOR.instances['Description'].updateElement();
+        }
+    });
+</script>
+}
+

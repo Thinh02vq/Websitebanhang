@@ -506,7 +506,9 @@
     </div>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
     @* Sửa lỗi 'Swal is not defined' bằng cách đặt code ở đây *@
     <script>
         $(document).ready(function () {
