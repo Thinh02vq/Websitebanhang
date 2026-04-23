@@ -1,250 +1,606 @@
-﻿<div class="row">
-	<div class="col-sm-3">
-		@await Html.PartialAsync("_SideBar")
-		</div>
-	<div class="col-sm-9 padding-right">
-		<div class="product-details">
-			<!--product-details-->
-			<div class="col-sm-5">
-				<div class="view-product">
-						<img src="~/media/products/@Model.Image" alt="" />
-					<h3>ZOOM</h3>
-				</div>
-				<div id="similar-product" class="carousel slide" data-ride="carousel">
-								
-					<!-- Wrapper for slides -->
-					<div class="carousel-inner">
-						<div class="item active">
-							<a href=""><img src="images/product-details/similar1.jpg" alt=""></a>
-							<a href=""><img src="images/product-details/similar2.jpg" alt=""></a>
-							<a href=""><img src="images/product-details/similar3.jpg" alt=""></a>
-						</div>			
-					</div>
+﻿@model ProductDetailsViewModel
+@{
+    ViewData["Title"] = "Chi tiết sản phẩm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 
-					<!-- Controls -->
-					<a class="left item-control" href="#similar-product" data-slide="prev">
-						<i class="fa fa-angle-left"></i>
-					</a>
-					<a class="right item-control" href="#similar-product" data-slide="next">
-						<i class="fa fa-angle-right"></i>
-					</a>
-				</div>
+    // Guard Clause: Kiểm tra null an toàn và chuyên nghiệp bằng Swal
+    if (Model.ProductDetails == null)
+    {
+        @section Scripts {
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Rất tiếc...',
+                        text: 'Sản phẩm này không tồn tại hoặc đã bị ngừng kinh doanh!',
+                        confirmButtonText: 'Quay lại trang chủ'
+                    }).then(() => {
+                        window.location.href = '@Url.Action("Index", "Home")';
+                    });
+                });
+            </script>
+        }
+        return; 
+    }
+}
 
-			</div>
-			<div class="col-sm-7">
-				<div class="product-information">
-					<!--/product-information-->
-					
-					<h2>@Model.Name</h2>
-						
-					<span>
-						<span>US $@Model.Price.ToString("#,##0") ₫</span>
-						<label>Quantity: 1</label>
-						<input type="text" value="3" />
-						<button type="button" class="btn btn-fefault cart">
-							<i class="fa fa-shopping-cart"></i>
-							Add to cart
-						</button>
-					</span>
-					<p><b>Availability:</b> In Stock</p>
-					<p><b>Condition:</b> New</p>
-					<p><b>Brand:</b>@Model.Brand.Name</p>
-					<p><b>Category:</b>@Model.Category.Name</p>
-					<a href=""><img src="images/product-details/share.png" class="share img-responsive" alt="" /></a>
-				</div><!--/product-information-->
-			</div>
-		</div><!--/product-details-->
-					
-		<div class="category-tab shop-details-tab">
-			<!--category-tab-->
-			<div class="col-sm-12">
-				<ul class="nav nav-tabs">
-					<li class="active"><a href="#details" data-toggle="tab">Details</a></li>
-					<li><a href="#companyprofile" data-toggle="tab">Company Profile</a></li>
-					<li><a href="#tag" data-toggle="tab">Tag</a></li>
-					<li class="active"><a href="#reviews" data-toggle="tab">Reviews (5)</a></li>
-				</ul>
-			</div>
-			<div class="tab-content">
-				<div class="tab-pane fade active in" id="details">
-                    @Model.Description
-				</div>
-							
-				<div class="tab-pane fade" id="companyprofile">
-					<div class="col-sm-3">
-						<div class="product-image-wrapper">
-							<div class="single-products">
-								<div class="productinfo text-center">
-									<img src="images/home/gallery1.jpg" alt="" />
-									<h2>$56</h2>
-									<p>Easy Polo Black Edition</p>
-									<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-sm-3">
-						<div class="product-image-wrapper">
-							<div class="single-products">
-								<div class="productinfo text-center">
-									<img src="images/home/gallery3.jpg" alt="" />
-									<h2>$56</h2>
-									<p>Easy Polo Black Edition</p>
-									<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-sm-3">
-						<div class="product-image-wrapper">
-							<div class="single-products">
-								<div class="productinfo text-center">
-									<img src="images/home/gallery2.jpg" alt="" />
-									<h2>$56</h2>
-									<p>Easy Polo Black Edition</p>
-									<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-sm-3">
-						<div class="product-image-wrapper">
-							<div class="single-products">
-								<div class="productinfo text-center">
-									<img src="images/home/gallery4.jpg" alt="" />
-									<h2>$56</h2>
-									<p>Easy Polo Black Edition</p>
-									<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-							
-				<div class="tab-pane fade" id="tag">
-					<div class="col-sm-3">
-						<div class="product-image-wrapper">
-							<div class="single-products">
-								<div class="productinfo text-center">
-									<img src="images/home/gallery1.jpg" alt="" />
-									<h2>$56</h2>
-									<p>Easy Polo Black Edition</p>
-									<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-sm-3">
-						<div class="product-image-wrapper">
-							<div class="single-products">
-								<div class="productinfo text-center">
-									<img src="images/home/gallery2.jpg" alt="" />
-									<h2>$56</h2>
-									<p>Easy Polo Black Edition</p>
-									<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-sm-3">
-						<div class="product-image-wrapper">
-							<div class="single-products">
-								<div class="productinfo text-center">
-									<img src="images/home/gallery3.jpg" alt="" />
-									<h2>$56</h2>
-									<p>Easy Polo Black Edition</p>
-									<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-sm-3">
-						<div class="product-image-wrapper">
-							<div class="single-products">
-								<div class="productinfo text-center">
-									<img src="images/home/gallery4.jpg" alt="" />
-									<h2>$56</h2>
-									<p>Easy Polo Black Edition</p>
-									<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-							
-				<div class="tab-pane fade" id="reviews">
-					<div class="col-sm-12">
-						<ul>
-							<li><a href=""><i class="fa fa-user"></i>EUGEN</a></li>
-							<li><a href=""><i class="fa fa-clock-o"></i>12:41 PM</a></li>
-							<li><a href=""><i class="fa fa-calendar-o"></i>31 DEC 2014</a></li>
-						</ul>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-						<p><b>Write Your Review</b></p>
-									
-						<form action="#">
-							<span>
-								<input type="text" placeholder="Your Name" />
-								<input type="email" placeholder="Email Address" />
-							</span>
-							<textarea name=""></textarea>
-							<b>Rating: </b> <img src="images/product-details/rating.png" alt="" />
-							<button type="button" class="btn btn-default pull-right">
-								Submit
-							</button>
-						</form>
-					</div>
-				</div>
-							
-			</div>
-		</div><!--/category-tab-->
-					
-		<div class="recommended_items">
-			<!--recommended_items-->
-			<h2 class="title text-center">Sản Phẩm Liên Quan</h2>
-						
-			<div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
-				<div class="carousel-inner">
-					<div class="item active">
-						@* Ép kiểu ViewBag ra một biến riêng để dễ kiểm soát *@
-						@{
-							var relatedProducts = ViewBag.RelatedProducts as IEnumerable<ProductModel>;
-						}
+@* Thêm CSS tùy chỉnh cho trang này *@
+    <style>
+        /* Modern Product Page Styles */
+        .product-details-container {
+            padding: 40px 0;
+            background-color: #f9f9f9;
+        }
 
-						@* Chỉ chạy vòng lặp nếu danh sách không null *@
-						@if (relatedProducts != null)
-						{
-							@foreach (var relatedProduct in relatedProducts)
-							{
-								<div class="col-sm-4">
-									<div class="product-image-wrapper">
-										<div class="single-products">
-											<div class="productinfo text-center">
-												
-												<a asp-action="details" asp-controller="Product" asp-route-Id="@relatedProduct?.Id">
-													<img src="~/media/products/@relatedProduct?.Image" alt="@relatedProduct?.Name" />
-													<h2>@(relatedProduct?.Price.ToString("#,##0") ?? "0") ₫</h2>
-													<p>@relatedProduct?.Name</p>
-													<p>Thương hiệu: @relatedProduct?.Brand?.Name</p>
-													<p>Danh mục: @relatedProduct?.Category?.Name</p>
-												</a>
-                                                <a class="btn btn-default add-to-cart" asp-action="Add" asp-controller="Cart" asp-route-Id="@relatedProduct?.Id"><i class="fa fa-shopping-cart"></i>Thêm giỏ hàng</a>
-											</div>
-										</div>
-									</div>
-								</div>
-							}
-						}
-					</div>
-				</div>
-				<a class="left recommended-item-control" href="#recommended-item-carousel" data-slide="prev">
-					<i class="fa fa-angle-left"></i>
-				</a>
-				<a class="right recommended-item-control" href="#recommended-item-carousel" data-slide="next">
-					<i class="fa fa-angle-right"></i>
-				</a>
-			</div>
-		</div><!--/recommended_items-->
-					
-	</div>
-</div>
+        .main-product-section {
+            display: flex;
+            gap: 30px;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+
+        .product-image-slider {
+            flex: 0 0 45%;
+            max-width: 45%;
+        }
+
+        .product-info-panel {
+            flex: 1;
+        }
+
+        .product-view-main {
+            border: 1px solid #eee;
+            border-radius: 4px;
+            padding: 10px;
+            text-align: center;
+            margin-bottom: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+        .product-view-main img {
+            max-width: 100%;
+            height: auto;
+            transition: transform 0.3s ease;
+        }
+        .product-view-main:hover img {
+            transform: scale(1.05);
+        }
+
+        /* Similar Images Carousel */
+        #similar-product-carousel {
+            margin-top: 15px;
+        }
+        #similar-product-carousel .carousel-inner .item {
+            text-align: center;
+        }
+        #similar-product-carousel .carousel-inner img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border: 2px solid transparent;
+            border-radius: 4px;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+        #similar-product-carousel .carousel-inner img:hover,
+        #similar-product-carousel .carousel-inner img.active-thumb {
+            border-color: #FE980F;
+        }
+
+        /* Product Info Styling */
+        .product-main-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #333;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .product-price-block {
+            background: #fff3e6;
+            padding: 15px 20px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        .product-price-new {
+            font-size: 32px;
+            font-weight: 700;
+            color: #FE980F;
+        }
+
+        .product-meta-data {
+            font-size: 15px;
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+        .product-meta-data b {
+            color: #333;
+            width: 120px;
+            display: inline-block;
+        }
+
+        /* Action Buttons */
+        .product-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid #eee;
+        }
+        .quantity-input-group {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .quantity-input-group button {
+            background: #f5f5f5;
+            border: none;
+            padding: 10px 15px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        .quantity-input-group input {
+            width: 60px;
+            text-align: center;
+            border: none;
+            border-left: 1px solid #ddd;
+            border-right: 1px solid #ddd;
+            font-size: 16px;
+            padding: 8px 0;
+        }
+
+        .btn-add-cart-lg {
+            background-color: #FE980F;
+            color: #fff;
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 4px;
+            transition: background 0.2s;
+            flex: 1;
+        }
+        .btn-add-cart-lg:hover {
+            background-color: #e68a0d;
+            color: #fff;
+        }
+
+        /* Modern Tabs */
+        .shop-details-tab-modern {
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 40px;
+        }
+        .nav-tabs-modern {
+            border-bottom: 2px solid #eee;
+            margin-bottom: 25px;
+        }
+        .nav-tabs-modern > li > a {
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            color: #555;
+            padding: 12px 20px;
+            margin-right: 5px;
+            border-radius: 0;
+            position: relative;
+        }
+        .nav-tabs-modern > li.active > a,
+        .nav-tabs-modern > li.active > a:hover,
+        .nav-tabs-modern > li.active > a:focus {
+            border: none;
+            color: #FE980F;
+            background: none;
+        }
+        .nav-tabs-modern > li.active > a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #FE980F;
+        }
+
+        /* Recommended Items Modern */
+        .recommended-section {
+            margin-bottom: 50px;
+        }
+        .recommended-section .title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            position: relative;
+            display: inline-block;
+        }
+        .recommended-section .title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background-color: #FE980F;
+        }
+
+        .product-item-modern {
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+            margin-bottom: 20px;
+        }
+        .product-item-modern:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: translateY(-5px);
+        }
+        .product-item-modern .pro-img-box {
+            position: relative;
+            padding: 20px;
+            text-align: center;
+        }
+        .product-item-modern .pro-img-box img {
+            max-width: 100%;
+            height: 200px;
+            object-fit: contain;
+        }
+        .product-item-modern .pro-info-box {
+            padding: 15px;
+            text-align: center;
+            border-top: 1px solid #eee;
+        }
+        .product-item-modern .pro-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin: 0 0 10px;
+            height: 40px;
+            overflow: hidden;
+        }
+        .product-item-modern .pro-price {
+            font-size: 18px;
+            font-weight: 700;
+            color: #FE980F;
+            margin-bottom: 15px;
+        }
+        .btn-add-cart-sm {
+            background-color: transparent;
+            border: 1px solid #FE980F;
+            color: #FE980F;
+            padding: 8px 20px;
+            border-radius: 4px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .btn-add-cart-sm:hover {
+            background-color: #FE980F;
+            color: #fff;
+        }
+
+        /* Review Form Modern */
+        .review-form-modern {
+            background: #fbfbfb;
+            padding: 25px;
+            border-radius: 8px;
+            border: 1px solid #eee;
+        }
+        .review-form-modern input, 
+        .review-form-modern textarea {
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            padding: 12px;
+            margin-bottom: 15px;
+        }
+        .review-form-modern textarea {
+            height: 120px;
+        }
+        .rating-selection {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .rating-selection i {
+            font-size: 20px;
+            color: #ccc;
+            cursor: pointer;
+        }
+        .rating-selection i.active {
+            color: #FE980F;
+        }
+
+        /* Responsive adjustments */
+        @@media (max-width: 991px) {
+            .main-product-section {
+                flex-direction: column;
+            }
+            .product-image-slider,
+            .product-info-panel {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+        }
+    </style>
+
+<div class="container product-details-container">
+    <div class="row">
+        @* Giữ nguyên Sidebar nếu bạn muốn, hoặc bỏ đi để sản phẩm tràn màn hình *@
+        <div class="col-sm-3">
+            @await Html.PartialAsync("_SideBar")
+        </div>
+        
+        <div class="col-sm-9">
+            @* --- Phần 1: Chi tiết sản phẩm chính (Layout mới) --- *@
+            <div class="main-product-section">
+                
+                @* Cột trái: Hình ảnh *@
+                <div class="product-image-slider">
+                    <div class="product-view-main">
+                        <img src="~/media/products/@Model.ProductDetails.Image" alt="@Model.ProductDetails.Name" id="main-product-img" />
+                    </div>
+                    
+                    @* Carousel ảnh phụ gọn gàng hơn *@
+                    <div id="similar-product-carousel" class="carousel slide" data-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="item active">
+                                <img src="~/media/products/@Model.ProductDetails.Image" alt="thumb1" class="active-thumb">
+                            </div>          
+                        </div>
+                    </div>
+                </div>
+
+                @* Cột phải: Thông tin & Hành động *@
+                <div class="product-info-panel">
+                    <h2 class="product-main-title">@Model.ProductDetails.Name</h2>
+                    
+                    <div class="product-meta-data">
+                        <p><b>Mã sản phẩm:</b> #@Model.ProductDetails.Id</p>
+                        <p><b>Thương hiệu:</b> @(Model.ProductDetails.Brand?.Name ?? "N/A")</p>
+                        <p><b>Danh mục:</b> @(Model.ProductDetails.Category?.Name ?? "N/A")</p>
+                        <p><b>Tình trạng:</b> <span class="text-success">Còn hàng</span></p>
+                    </div>
+
+                    <div class="product-price-block">
+                        <span class="product-price-new">@Model.ProductDetails.Price.ToString("#,##0") ₫</span>
+                    </div>
+                        
+                    <div class="product-actions">
+                        <div class="quantity-input-group">
+                            <button type="button" class="minus">-</button>
+                            <input type="text" value="1" id="product-quantity" />
+                            <button type="button" class="plus">+</button>
+                        </div>
+                        <button type="button" class="btn-add-cart-lg add-to-cart-main" data-product_id="@Model.ProductDetails.Id">
+                            <i class="fa fa-shopping-cart"></i> THÊM VÀO GIỎ HÀNG
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            @* --- Phần 2: Tab thông tin (Modernized) --- *@
+            <div class="shop-details-tab-modern">
+                <ul class="nav nav-tabs-modern">
+                    <li class="active"><a href="#details" data-toggle="tab">Mô tả sản phẩm</a></li>
+                    <li><a href="#reviews" data-toggle="tab">Đánh giá (5)</a></li>
+                </ul>
+                
+                <div class="tab-content">
+                    <div class="tab-pane fade active in" id="details">
+                        <div class="product-description-content">
+                            @Html.Raw(Model.ProductDetails.Description)
+                        </div>
+                    </div>
+                            
+                    <div class="tab-pane fade" id="reviews">
+                            <div class="col-sm-12">
+                                @if (Model.Raitings != null && Model.Raitings.Any())
+                                {
+                                    foreach (var item in Model.Raitings)
+                                    {
+                                        <div class="media" style="margin-bottom: 20px; border-bottom: 1px solid #eee;">
+                                            <div class="media-body">
+                                                <ul class="sinlge-post-meta">
+                                                    <li><i class="fa fa-user"></i>@item.Name</li>
+                                                    <li><i class="fa fa-envelope"></i>@item.Email</li>
+                                                    @* Nếu bạn có trường ngày tháng: *@
+                                                    @* <li><i class="fa fa-calendar"></i>@item.DateCreated</li> *@
+                                                </ul>
+                                                <p>@item.Comments</p>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <p>Chưa có đánh giá nào cho sản phẩm này.</p>
+                                }
+                            </div>
+                        </div>
+                                    
+                        <div class="review-form-modern">
+                            <h4 class="title">Viết đánh giá của bạn</h4>
+                            <form autocomplete="off" asp-action="CommentProduct" asp-controller="Product" method="post" id="commentFormModern">
+                                <input type="hidden" asp-for="@Model.ProductDetails.Id" name="ProductId"/>
+                                <input name="Stars" type="hidden" id="selectedRating" value="5"/>
+                                
+                                <div class="rating-selection">
+                                    <b>Đánh giá: </b>
+                                    <div class="stars-range">
+                                        <i class="fa fa-star active" data-value="1"></i>
+                                        <i class="fa fa-star active" data-value="2"></i>
+                                        <i class="fa fa-star active" data-value="3"></i>
+                                        <i class="fa fa-star active" data-value="4"></i>
+                                        <i class="fa fa-star active" data-value="5"></i>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <input asp-for="@Model.Name" type="text" placeholder="Tên của bạn *" class="form-control"/>
+                                        <span asp-validation-for="@Model.Name" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input asp-for="@Model.Email" type="email" placeholder="Email liên hệ *" class="form-control"/>
+                                        <span asp-validation-for="@Model.Email" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <textarea asp-for="@Model.Comments" placeholder="Nội dung đánh giá của bạn... *" class="form-control"></textarea>
+                                <span asp-validation-for="@Model.Comments" class="text-danger"></span>
+                                
+                                <button type="submit" class="btn btn-default pull-right">Gửi đánh giá</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @* --- Phần 3: Sản phẩm liên quan (Modern Grid) --- *@
+            <div class="recommended-section">
+                <h2 class="title text-center">Sản phẩm liên quan</h2>
+                        
+                <div class="row">
+                    @{
+                        var relatedProducts = ViewBag.RelatedProducts as IEnumerable<ProductModel>;
+                    }
+                    @if (relatedProducts != null && relatedProducts.Any())
+                    {
+                        @foreach (var relatedProduct in relatedProducts)
+                        {
+                            <div class="col-sm-4">
+                                <div class="product-item-modern">
+                                    <div class="pro-img-box">
+                                        <a asp-action="details" asp-controller="Product" asp-route-Id="@relatedProduct?.Id">
+                                            <img src="~/media/products/@relatedProduct?.Image" alt="@relatedProduct?.Name" />
+                                        </a>
+                                    </div>
+                                    <div class="pro-info-box">
+                                        <h3 class="pro-title">
+                                            <a asp-action="details" asp-controller="Product" asp-route-Id="@relatedProduct?.Id">@relatedProduct?.Name</a>
+                                        </h3>
+                                        <p class="pro-price">@(relatedProduct?.Price.ToString("#,##0") ?? "0") ₫</p>
+                                        <button type="button" class="btn-add-cart-sm add-to-cart" data-product_id="@relatedProduct?.Id">
+                                            <i class="fa fa-shopping-cart"></i> Thêm
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    } else {
+                        <div class="col-xs-12 text-center text-muted">Không có sản phẩm liên quan nào.</div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    @* Sửa lỗi 'Swal is not defined' bằng cách đặt code ở đây *@
+    <script>
+        $(document).ready(function () {
+            // 1. Xử lý nút tăng giảm số lượng
+            $('.quantity-input-group .plus').click(function() {
+                var input = $(this).prev();
+                input.val(parseInt(input.val()) + 1);
+            });
+            $('.quantity-input-group .minus').click(function() {
+                var input = $(this).next();
+                var val = parseInt(input.val());
+                if (val > 1) input.val(val - 1);
+            });
+
+            // 2. Xử lý Carousel ảnh phụ (Click đổi ảnh chính)
+            $('#similar-product-carousel img').click(function() {
+                $('#similar-product-carousel img').removeClass('active-thumb');
+                $(this).addClass('active-thumb');
+                var newSrc = $(this).attr('src');
+                $('#main-product-img').attr('src', newSrc);
+            });
+
+            // 3. Xử lý Chọn sao đánh giá
+            $('.stars-range i').click(function() {
+                var val = $(this).data('value');
+                $('#selectedRating').val(val);
+                $('.stars-range i').removeClass('active');
+                $('.stars-range i').each(function() {
+                    if ($(this).data('value') <= val) {
+                        $(this).addClass('active');
+                    }
+                });
+            });
+
+            // 4. AJAX: Thêm giỏ hàng từ nút chính (có số lượng)
+            $('.add-to-cart-main').click(function(e) {
+                e.preventDefault();
+                var Id = $(this).data('product_id');
+                var Quantity = $('#product-quantity').val();
+                
+                $.ajax({
+                    url: '@Url.Action("Add", "Cart")',
+                    type: 'POST',
+                    data: { Id: Id, Quantity: Quantity }, // Cập nhật Controller để nhận Quantity
+                    success: function (result) {
+                        if (result.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Đã thêm!',
+                                text: result.message,
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        }
+                    },
+                    error: function() {
+                        Swal.fire("Lỗi", "Không thể thêm sản phẩm", "error");
+                    }
+                });
+            });
+
+            // 5. AJAX: Thêm giỏ hàng từ Sản phẩm liên quan (Số lượng = 1)
+            $('.add-to-cart').click(function(e) {
+                e.preventDefault();
+                var Id = $(this).data('product_id');
+                $.ajax({
+                    url: '@Url.Action("Add", "Cart")',
+                    type: 'POST',
+                    data: { Id: Id, Quantity: 1 },
+                    success: function (result) {
+                        if (result.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Đã thêm!',
+                                text: result.message,
+                                timer: 1500
+                            });
+                        }
+                    }
+                });
+            });
+
+            // 6. Hiện thông báo TempData khi load trang (Hết lỗi chữ)
+            @if (TempData["SuccessMessage"] != null) {
+                <text>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thành công!',
+                    text: '@Html.Raw(TempData["SuccessMessage"])',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+                </text>
+            }
+        });
+    </script>
+}

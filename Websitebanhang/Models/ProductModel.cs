@@ -34,6 +34,8 @@ namespace Websitebanhang.Models
 
         public string? Image { get; set; }
 
+        public virtual ICollection<RaitingModel> Raiting { get; set; } = new List<RaitingModel>();
+
         [NotMapped]
         [FileExtension]
         public IFormFile? ImageUpload { get; set; }
