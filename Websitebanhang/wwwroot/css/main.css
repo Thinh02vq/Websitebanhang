@@ -573,45 +573,56 @@ ul.sub-menu {
 }
 /* 1. Xóa bỏ khoảng trống thừa và bo góc khung slider */
 #slider-carousel {
-    position: relative;
-    padding: 0;
-    margin: 0;
+	position: relative;
+	padding: 0;
+	margin: 0;
+	overflow: hidden;
 }
 
 /* 2. Ép mũi tên vào giữa chiều dọc của ảnh */
 .control-carousel {
-    position: absolute;
-    top: 50% !important; /* Đưa xuống giữa 50% */
-    transform: translateY(-50%); /* Căn chuẩn tâm dọc */
-    z-index: 10;
-    border: none !important; /* Xóa viền tròn cũ của template */
-    background: none !important; /* Xóa màu nền xám */
-    font-size: 50px !important; /* Độ to mũi tên */
-    color: #FE980F !important; /* Màu cam đặc trưng */
-    margin-top: 0 !important; /* Xóa margin gây lệch */
-    opacity: 0.6;
-    transition: 0.3s;
+	position: absolute;
+	top: 50%; /* Đẩy nút xuống giữa chiều cao ảnh */
+	transform: translateY(-50%); /* Cân bằng lại để tâm nút nằm đúng giữa */
+	z-index: 5; /* Đảm bảo nút luôn nằm TRÊN ảnh */
+	width: 40px; /* Độ rộng vùng bấm */
+	height: 100px; /* Chiều cao vùng bấm (giống mẫu Shopee) */
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: rgba(0, 0, 0, 0.1); /* Nền mờ nhẹ */
+	color: #fff;
+	transition: all 0.3s ease;
 }
 
 .control-carousel:hover {
-    opacity: 1;
-    transform: translateY(-50%) scale(1.2); /* Phóng to nhẹ khi rê chuột */
+	background: rgba(0, 0, 0, 0.5); /* Tối dần nền khi hover */
+    color: #FE980F; /* Màu cam đặc trưng của bạn */
+    text-decoration: none;
 }
 
 /* 3. Đưa mũi tên vào sát mép trong của ảnh (không bị lòi ra ngoài trắng) */
 .left.control-carousel {
-    left: 20px !important;
+	left: 0; /* Sát mép trái ảnh */
+	border-radius: 0 5px 5px 0;
 }
 
 .right.control-carousel {
-    right: 20px !important;
+	right: 0; /* Sát mép phải ảnh */
+	border-radius: 5px 0 0 5px;
 }
-
+.carousel-control.left, .carousel-control.right {
+	background-image: none !important;
+	filter: none !important;
+	width: auto; /* Không để nút chiếm quá nhiều diện tích bề ngang */
+}
 /* 4. Chỉnh lại các dấu chấm indicators cho gọn */
 .carousel-indicators {
     bottom: 5px !important;
 }
-
+.control-carousel i {
+	font-size: 30px;
+}
 .carousel-indicators li {
     background-color: rgba(255, 255, 255, 0.5);
     border: 1px solid #FE980F;
