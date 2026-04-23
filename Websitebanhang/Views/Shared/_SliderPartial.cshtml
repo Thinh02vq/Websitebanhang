@@ -1,0 +1,40 @@
+﻿@{
+    int index = 0;
+}
+<section id="slider">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div id="slider-carousel" class="carousel slide" data-ride="carousel">
+                    
+                    <ol class="carousel-indicators">
+                        @for (int i = 0; i < ((IEnumerable<dynamic>)ViewBag.Sliders).Count(); i++)
+                        {
+                            <li data-target="#slider-carousel" data-slide-to="@i" class="@(i == 0 ? "active" : "")"></li>
+                        }
+                    </ol>
+
+                    <div class="carousel-inner">
+                        @foreach (var slider in ViewBag.Sliders)
+                        {
+                            <div class="item @(index == 0 ? "active" : "")">
+                                    <img src="~/media/sliders/@slider.Image"
+                                         class="img-responsive"
+                                         alt="Slider Image"
+                                        style="width: 100%; height: auto; max-height: 450px; object-fit: cover;">
+                                </div>
+                                index++;
+                            }
+                        </div>
+
+                        <a href="#slider-carousel" class="left control-carousel hidden-xs" data-slide="prev">
+                            <i class="fa fa-angle-left"></i>
+                        </a>
+                        <a href="#slider-carousel" class="right control-carousel hidden-xs" data-slide="next">
+                            <i class="fa fa-angle-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>

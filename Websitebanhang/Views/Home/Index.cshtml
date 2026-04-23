@@ -1,8 +1,13 @@
 ﻿@model IEnumerable<ProductModel>
+@{
+    ViewData["Title"] = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<partial name="_SliderPartial" />
 <div class="col-sm-3">
 	@await Html.PartialAsync("_SideBar")
 </div>
-				
+
 <div class="col-sm-9 padding-right">
 	<div class="features_items">
 		<!--features_items-->

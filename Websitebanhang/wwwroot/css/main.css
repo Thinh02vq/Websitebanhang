@@ -571,7 +571,73 @@ ul.sub-menu {
 #slider {
   padding-bottom: 45px;
 }
+/* 1. Xóa bỏ khoảng trống thừa và bo góc khung slider */
+#slider-carousel {
+    position: relative;
+    padding: 0;
+    margin: 0;
+}
 
+/* 2. Ép mũi tên vào giữa chiều dọc của ảnh */
+.control-carousel {
+    position: absolute;
+    top: 50% !important; /* Đưa xuống giữa 50% */
+    transform: translateY(-50%); /* Căn chuẩn tâm dọc */
+    z-index: 10;
+    border: none !important; /* Xóa viền tròn cũ của template */
+    background: none !important; /* Xóa màu nền xám */
+    font-size: 50px !important; /* Độ to mũi tên */
+    color: #FE980F !important; /* Màu cam đặc trưng */
+    margin-top: 0 !important; /* Xóa margin gây lệch */
+    opacity: 0.6;
+    transition: 0.3s;
+}
+
+.control-carousel:hover {
+    opacity: 1;
+    transform: translateY(-50%) scale(1.2); /* Phóng to nhẹ khi rê chuột */
+}
+
+/* 3. Đưa mũi tên vào sát mép trong của ảnh (không bị lòi ra ngoài trắng) */
+.left.control-carousel {
+    left: 20px !important;
+}
+
+.right.control-carousel {
+    right: 20px !important;
+}
+
+/* 4. Chỉnh lại các dấu chấm indicators cho gọn */
+.carousel-indicators {
+    bottom: 5px !important;
+}
+
+.carousel-indicators li {
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 1px solid #FE980F;
+}
+
+.carousel-indicators .active {
+    background-color: #FE980F;
+}
+.carousel-inner .item img {
+	max-height: 450px;
+	width: auto;
+	margin: 0 auto;
+}
+.slider-carousel .item img {
+	border-radius: 20px; /* Bo góc ảnh */
+	box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* Đổ bóng nhẹ */
+}
+.carousel-indicators {
+    bottom: 10px; /* Cách đáy ảnh một khoảng vừa phải */
+}
+.carousel-indicators li {
+    border: 1px solid #FE980F; /* Viền màu cam giống template Eshopper */
+}
+.carousel-indicators .active {
+    background-color: #FE980F; /* Chấm đang chọn hiện màu cam */
+}
 .carousel-indicators li {
   background: #C4C4BE;
 }
