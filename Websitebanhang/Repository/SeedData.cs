@@ -39,6 +39,20 @@ namespace Websitebanhang.Repository
 
                 _context.SaveChanges();
             }
+            if (!_context.Contacts.Any())
+            {
+                _context.Contacts.AddRange(
+                    new ContactModel
+                    {
+                        Name = "Cửa hàng phụ kiện và đồ công nghệ ABC",
+                        Description = "Chuyên bán phụ kiện và thiết bị công nghệ cao",
+                        Phone = "0912345678",
+                        Map = "<iframe src =\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7446.976598078517!2d105.73445229143498!3d21.0531509224089!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x313454f9de2328cf%3A0xc5685fbea9808d8e!2zTmd1ecOqbiBYw6EsIFTDonkgVOG7sXUsIEjDoCBO4buZaSwgVmnhu4d0IE5hbQ!5e0!3m2!1svi!2s!4v1779179550628!5m2!1svi!2s\" width=\"450 \" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>",
+                        Email = "contact@abc.com",
+                        LogoImg = "abc-logo.png"
+                    });
+                _context.SaveChanges();
+            }
         }
         public static async Task SeedUsers(UserManager<AppUserModel> userManager, RoleManager<IdentityRole> roleManager)
         {
@@ -101,7 +115,6 @@ namespace Websitebanhang.Repository
                 var result = await userManager.CreateAsync(newCustomer, "Pass123@");
                 if (result.Succeeded)
                 {
-                    // Lưu ý: Tên Role gán ở đây phải khớp 100% với tên tạo ở Bước 1
                     await userManager.AddToRoleAsync(newCustomer, "Khách hàng");
                 }
             }

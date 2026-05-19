@@ -29,5 +29,7 @@ namespace Websitebanhang.Repository
         public DbSet<RaitingModel> Raitings { get; set; } 
         
         public DbSet<SliderModel> Sliders { get; set; }
+
+        public DbSet<ContactModel> Contacts { get; set; }
     }
 }

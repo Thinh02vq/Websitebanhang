@@ -1,0 +1,62 @@
+﻿@model ContactModel
+
+@{
+    ViewData["Title"] = "Edit Contact";
+}
+<h3> Sửa thông tin liên hệ</h3>
+<div class="col-md-9">
+    <form asp-area="Admin" asp-controller="Contact" asp-action="Edit" method="post" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label>Tên</label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class=" text-danger" />
+        </div>
+        <div class="form-group">
+            <label>Mô tả</label>
+            <textarea asp-for="Description" class="form-control"></textarea>
+            <span asp-validation-for="Description" class=" text-danger" />
+        </div>
+        <div class="form-group">
+            <label>Số điện thoại</label>
+            <input asp-for="Phone" class="form-control" />
+            <span asp-validation-for="Phone" class=" text-danger" />
+        </div>
+        <div class="form-group">
+            <label>Map</label>
+            <textarea asp-for="Map" class="form-control"></textarea>
+            <span asp-validation-for="Map" class=" text-danger" />
+        </div>
+        <div class="form-group">
+            <label>Email</label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class=" text-danger" />
+        </div>
+
+        <div class="form-group">
+            <label>Logo hiện tại</label>
+            <div>
+                <img src="~/media/logo/@(string.IsNullOrEmpty(Model.LogoImg) ? "noimage.png" : Model.LogoImg)"
+                     width="120" class="img-thumbnail" />
+            </div>
+            <br />
+            <label>Chọn ảnh mới</label>
+            <input type="file" asp-for="ImageUpload" class="form-control" />
+            <span asp-validation-for="ImageUpload" class=" text-danger" />
+        </div>
+        <div class="form-group">
+            <button class="btn btn-primary">Sửa thông tin </button>
+        </div>
+    </form>
+    <a asp-action="Index" class="btn btn-danger">Trở lại danh sách liên hệ </a>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+    <script>
+        CKEDITOR.replace('Description');
+    </script>
+}
+
