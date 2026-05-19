@@ -1,6 +1,137 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-<h2>Thông tin liên hệ </h2>
+﻿@model Websitebanhang.Models.ContactModel
+
+<div class="container my-5">
+    <div class="text-center mb-5">
+        <h2 class="fw-bold text-uppercase text-dark position-relative d-inline-block pb-3">
+            Thông Tin Liên Hệ
+            <span class="position-absolute bottom-0 start-50 translate-middle-x bg-warning" style="width: 60px; height: 3px;"></span>
+        </h2>
+        <p class="text-muted mt-2">@Html.Raw(@Model.Description)</p>
+    </div>
+
+    <div class="row g-4 shadow-sm rounded-4 overflow-hidden bg-white border">
+       <div class="col-lg-5 p-5 bg-light d-flex flex-column justify-content-between contact-info-panel">
+    <div>
+        <h2 class="fw-bold mb-4 text-dark text-start">Liên Hệ Với Chúng Tôi</h2>
+        @* Khối thông tin: Điện thoại *@
+        <div class="mb-4 d-flex align-items-start contact-item">
+            <div class="contact-icon-block me-3 shadow-sm">
+                <i class="fas fa-phone"></i>
+            </div>
+            <div>
+                <h2 class="fw-bold mb-1">Điện thoại</h2>
+                <medium class="text-muted d-block line-height-tight">@Model.Phone</medium>
+            </div>
+        </div>
+
+        @* Khối thông tin: Email *@
+        <div class="mb-4 d-flex align-items-start contact-item">
+            <div class="contact-icon-block me-3 shadow-sm">
+                <i class="fas fa-envelope"></i>
+            </div>
+            <div>
+                <h2 class="fw-bold mb-1">Email</h2>
+                <medium class="text-muted d-block line-height-tight">@Model.Email</medium>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-bottom: 50px; clear: both;">
+    <h2 class="mt-5 mb-5 pb-5 fw-bold mb-4 text-dark text-start" >Kết nối với chúng tôi</h2>
+    
+    <div style="display: flex !important; flex-direction: row !important; justify-content: flex-start !important; align-items: center !important;">
+        
+        <a href="#" class="social-link facebook" style="display: flex !important; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 50%; color: white; text-decoration: none; margin-right: 12px; background-color: #3b5998;">
+            <i class="fab fa-facebook-f"></i>
+        </a>
+        
+        <a href="#" class="social-link youtube" style="display: flex !important; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 50%; color: white; text-decoration: none; margin-right: 12px; background-color: #c4302b;">
+            <i class="fab fa-youtube"></i>
+        </a>
+        
+        <a href="#" class="social-link tiktok" style="display: flex !important; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 50%; color: white; text-decoration: none; background-color: #010101;">
+            <i class="fab fa-tiktok"></i>
+        </a>
+    </div>
+</div>
+</div>
+
+        <div class="col-lg-7 p-0 position-relative" style="min-height: 350px;">
+            <div class="w-100 h-100 map-wrapper">
+                <h2 class="fw-bold mb-0">Địa chỉ</h2>
+                @if (!string.IsNullOrEmpty(Model.Map))
+                {
+                    @Html.Raw(Model.Map)
+                }
+                else
+                {
+                    <div class="d-flex align-items-center justify-content-center h-100 bg-secondary-subtle">
+                        <p class="text-muted">Bản đồ chưa được cấu hình</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Tăng khoảng cách tiêu đề và nội dung */
+    .contact-info-panel h4 {
+        margin-bottom: 2rem !important;
+    }
+
+    /* Kiểu dáng cho khối icon bên trái mỗi thông tin */
+    .contact-icon-block {
+        width: 48px;
+        height: 48px;
+        background-color: #ffc107; /* Màu vàng của bạn */
+        color: white;
+        border-radius: 10px; /* Bo góc nhẹ */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.15rem; /* Icon vừa phải */
+        flex-shrink: 0; /* Không cho icon bị co lại */
+    }
+
+    /* Căn chỉnh lại phần thông tin văn bản */
+    .contact-item small {
+        display: block;
+        line-height: 1.4; /* Khoảng cách dòng vừa phải */
+    }
+
+    /* Kiểu dáng cho các nút mạng xã hội ở dưới cùng */
+    .social-link {
+        display: flex !important; /* Ép buộc hiển thị dạng flex nội bộ */
+        align-items: center;
+        justify-content: center;
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        color: white;
+        text-decoration: none;
+    }
+
+    /* Màu cụ thể cho từng nút mạng xã hội */
+    .social-link.facebook { background-color: #3b5998; }
+    .social-link.youtube { background-color: #c4302b; }
+    .social-link.tiktok { background-color: #010101; }
+
+    /* Hiệu ứng rê chuột */
+    .social-link:hover {
+        transform: translateY(-4px); /* Nhích lên nhẹ */
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2) !important;
+    }
+
+    /* Khoảng cách giữa tiêu đề và mạng xã hội */
+    .social-connect {
+        margin-top: auto !important; /* Đẩy xuống cuối bảng tin */
+    }
+        /* Ép iframe bản đồ chiếm trọn 100% không gian cột phải */
+    .map-wrapper iframe {
+        width: 100% !important;
+        height: 100% !important;
+        min-height: 350px;
+        border: 0 !important;
+    }
+</style>

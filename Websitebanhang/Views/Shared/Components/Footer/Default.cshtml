@@ -1,20 +1,73 @@
 ﻿@model ContactModel
-<div class="row">
-		<div class="col-sm-2">
-			<div class="companyinfo">
-				<p><img src="~/media/logo/@Model.LogoImg" width="139" height="39"></p>
-				<p><b>@Html.Raw(Model.Description)</b></p>
-			</div>
-		</div>
-	<div class="col-sm-5 col-md-5">
-			@Html.Raw(Model.Map)
-	</div>
-		<div class="col-sm-5">
-			<div class="address">
-				<h5>Shop: @Model.Name</h5>
-				<h5>Email: @Model.Email</h5>
-				<h5>Điện thoại: @Model.Phone</h5>
-			</div>
-		</div>
-</div>
 
+<footer class="bg-light text-dark border-top mt-5 pt-5 pb-4" style="clear: both;">
+    <div class="container">
+        <div class="row g-4 align-items-start">
+            
+            <div class="col-md-3 col-sm-12">
+                <div class="companyinfo">
+                    <div class="mb-3">
+                        <img src="~/media/logo/@Model.LogoImg" width="139" height="39" alt="Logo" class="img-fluid">
+                        </div>
+                        <p class="text-muted small" style="line-height: 1.6;">
+                            <b>
+                            @Html.Raw(Model.Description)
+                            </b>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-5 col-sm-12">
+                    <div class="footer-map-wrapper rounded shadow-sm overflow-hidden" style="height: 200px;margin: 30px">
+                        @Html.Raw(Model.Map)
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-12">
+                    <div class="ps-md-4" style="margin-top:20px">
+                        <h3>Thông tin liên hệ</h3>
+                    
+                        <div class="mb-2 d-flex align-items-center">
+                            <span class="text-warning me-2" style="width: 20px;"><i class="fas fa-store"></i></span>
+                            <span class="small"><b>Shop:</b> @Model.Name</span>
+                        </div>
+                    
+                        <div class="mb-2 d-flex align-items-center">
+                            <span class="text-warning me-2" style="width: 20px;"><i class="fas fa-envelope"></i></span>
+                            <span class="small"><b>Email:</b> @Model.Email</span>
+                        </div>
+                    
+                        <div class="mb-3 d-flex align-items-center">
+                            <span class="text-warning me-2" style="width: 20px;"><i class="fas fa-phone-alt"></i></span>
+                            <span class="small"><b>Điện thoại:</b> @Model.Phone</span>
+                        </div>
+
+                        <div class="pt-2 border-top border-secondary border-opacity-10" >
+                            <div style="display: flex !important; flex-direction: row !important; justify-content: flex-start !important; align-items: center !important; margin-top:10px">
+                                <a href="#" style="display: flex !important; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; color: white; text-decoration: none; margin-right: 10px; background-color: #3b5998; font-size: 0.9rem;">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                                <a href="#" style="display: flex !important; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; color: white; text-decoration: none; margin-right: 10px; background-color: #c4302b; font-size: 0.9rem;">
+                                    <i class="fab fa-youtube"></i>
+                                </a>
+                                <a href="#" style="display: flex !important; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; color: white; text-decoration: none; background-color: #010101; font-size: 0.9rem;">
+                                    <i class="fab fa-tiktok"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </footer>
+
+    <style>
+        /* Ép iframe bản đồ trong footer tự co giãn theo khung 200px cho đẹp, không bị tràn lung tung */
+        .footer-map-wrapper iframe {
+            width: 100% !important;
+            height: 100% !important;
+            border: 0 !important;
+        }
+    </style>
