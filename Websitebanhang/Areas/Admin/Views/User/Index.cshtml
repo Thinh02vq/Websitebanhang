@@ -50,6 +50,12 @@
 <partial name="_Paging" model="@pager" />
 @section Scripts {
     <script>
-        let table = new DataTable('#userTable');
+        let table = new DataTable('#userTable', {
+            layout: {
+                topStart: {
+                    buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+                }
+            }
+        });
     </script>
 }
