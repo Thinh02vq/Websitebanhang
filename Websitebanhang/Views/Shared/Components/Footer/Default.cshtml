@@ -1,0 +1,20 @@
+﻿@model ContactModel
+<div class="row">
+		<div class="col-sm-2">
+			<div class="companyinfo">
+				<p><img src="~/media/logo/@Model.LogoImg" width="139" height="39"></p>
+				<p><b>@Html.Raw(Model.Description)</b></p>
+			</div>
+		</div>
+	<div class="col-sm-5 col-md-5">
+			@Html.Raw(Model.Map)
+	</div>
+		<div class="col-sm-5">
+			<div class="address">
+				<h5>Shop: @Model.Name</h5>
+				<h5>Email: @Model.Email</h5>
+				<h5>Điện thoại: @Model.Phone</h5>
+			</div>
+		</div>
+</div>
+
